@@ -27,10 +27,6 @@
       },
       "ServerPackages": {
         "$path": "ServerPackages"
-      },
-      "Modules": {
-        "$className": "Folder",
-        "$path": "src/server/modules"
       }
     },
     "StarterPlayer": {
