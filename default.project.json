@@ -7,6 +7,9 @@
       "Shared": {
         "$path": "src/shared"
       },
+      "Packages": {
+        "$path": "Packages"
+      },
       "Events": {
         "$className": "Folder",
         "InterventionRemote": {
@@ -21,6 +24,9 @@
       "$className": "ServerScriptService",
       "Server": {
         "$path": "src/server"
+      },
+      "ServerPackages": {
+        "$path": "ServerPackages"
       },
       "Modules": {
         "$className": "Folder",
