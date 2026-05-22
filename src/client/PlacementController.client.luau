@@ -20,6 +20,7 @@ local active = false
 local currentDeityId = "old_forest_spirit" -- Standard-Monument für Platzierungstests
 local currentRotation = 0 -- Grad: 0, 90, 180, 270
 local previewPart: Part? = nil
+local previewIndicator: Part? = nil
 local renderConnection: RBXScriptConnection? = nil
 
 -- Hilfsfunktion: Ermittelt die Mausposition im World-Space (Schnittpunkt mit Boden/Baseplate)
@@ -103,6 +104,10 @@ local function deactivatePlacement()
 		previewPart:Destroy()
 		previewPart = nil
 	end
+	if previewIndicator then
+		previewIndicator:Destroy()
+		previewIndicator = nil
+	end
 	print("[PlacementController] Platzierungsmodus deaktiviert.")
 end
 
@@ -140,6 +145,20 @@ local function activatePlacement(deityId: string)
 	part.Parent = workspace
 	
 	previewPart = part
+
+	-- Visueller Front-Indikator (um die Rotation auch bei quadratischen Monumenten extrem gut sichtbar zu machen!)
+	local indicator = Instance.new("Part")
+	indicator.Name = "FrontIndicator"
+	indicator.Size = Vector3.new(w, 0.5, 1) -- Deutlich größer: Breite des Parts, 0.5 Studs hoch, 1 Stud tief
+	indicator.Material = Enum.Material.SmoothPlastic
+	indicator.Color = Color3.fromRGB(0, 170, 255) -- Wunderschönes Cyan-Blau
+	indicator.CanCollide = false
+	indicator.CanTouch = false
+	indicator.CanQuery = false
+	indicator.Anchored = true
+	indicator.Parent = workspace
+	
+	previewIndicator = indicator
 	
 	print("[PlacementController] Platzierungsmodus aktiviert für Gottheit:", deityId)
 	
@@ -154,6 +173,7 @@ local function activatePlacement(deityId: string)
 		local mouseWorldPos = getMouseWorldPosition()
 		if not mouseWorldPos then
 			previewPart.Transparency = 1.0 -- Unsichtbar machen, wenn die Maus im Leeren ist
+			if indicator then indicator.Transparency = 1.0 end
 			return
 		end
 		
@@ -172,12 +192,20 @@ local function activatePlacement(deityId: string)
 		
 		-- 4. Setze Position und Rotation des Vorschauparts
 		previewPart.CFrame = CFrame.new(centerWorldPos) * CFrame.Angles(0, math.rad(currentRotation), 0)
+		previewPart.Transparency = baseTransparency + math.sin(os.clock() * 6) * 0.1
 		
-		-- 5. Lokale Kollisions- und Boundsprüfung
+		-- 5. Aktualisiere Position des Front-Indikators relativ zum Hauptpart
+		if indicator then
+			indicator.Transparency = previewPart.Transparency
+			-- Positioniere ihn auf der Oberseite (Y = 1.25) an der Vorderkante
+			indicator.CFrame = previewPart.CFrame * CFrame.new(0, 1.25, -currentL * GridConfig.Settings.CellSize / 2 + 0.5)
+		end
+		
+		-- 6. Lokale Kollisions- und Boundsprüfung
 		local occupiedCells = getOccupiedCells()
 		local isValid, _ = GridMath.CheckPlacementValidity(occupiedCells, currentDeityId, cellX, cellZ, currentRotation)
 		
-		-- 6. Visuelles Feedback (Neon Grün bei Valide, Neon Rot bei Blockiert)
+		-- 7. Visuelles Feedback (Neon Grün bei Valide, Neon Rot bei Blockiert)
 		if isValid then
 			previewPart.Color = Color3.fromHSV(0.333, 1, 1) -- Neon-Lime
 		else
@@ -244,8 +272,9 @@ UserInputService.InputBegan:Connect(function(input, gameProcessed)
 					print("[PlacementController] Sende Platzierungsanfrage an den Server...")
 					placementRemote:FireServer(currentDeityId, mouseWorldPos, currentRotation)
 					
-					-- Platzierung abschließen und Vorschau beenden
-					deactivatePlacement()
+					-- Der Platzierungsmodus bleibt für fortlaufendes Platzieren aktiv!
+					-- Zum Beenden: Rechtsklick, Escape oder P drücken.
+					print("[PlacementController] Objekt platziert. Modus bleibt aktiv (Rechtsklick/Escape zum Beenden).")
 				else
 					warn("[PlacementController] Ungültige Platzierung! Anfrage wird nicht gesendet.")
 				end

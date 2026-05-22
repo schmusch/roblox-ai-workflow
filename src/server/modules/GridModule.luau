@@ -112,6 +112,42 @@ function GridModule.PlaceObject(player: Player, deityId: string, cellX: number, 
 	-- Gitterzustand auf dem Spieler-Objekt für den Client replizieren
 	player:SetAttribute("CitadelPlacedObjects", HttpService:JSONEncode(grid.Objects))
 
+	-- Physisches Objekt in Workspace instanziieren (nur für echte Spieler im Live-Spiel)
+	local isRealPlayer = typeof(player) == "Instance" and player:IsA("Player")
+	if isRealPlayer then
+		local placedObjectsFolder = workspace:FindFirstChild("PlacedObjects")
+		if not placedObjectsFolder then
+			placedObjectsFolder = Instance.new("Folder")
+			placedObjectsFolder.Name = "PlacedObjects"
+			placedObjectsFolder.Parent = workspace
+		end
+		
+		-- Berechne die zentrierte Position
+		local w = profile.Width
+		local l = profile.Length
+		if rotation == 90 or rotation == 270 then
+			w, l = l, w
+		end
+		
+		local centerX = cellX + (w - 1) / 2
+		local centerZ = cellZ + (l - 1) / 2
+		local settings = GridConfig.Settings
+		
+		local worldX = (centerX - 1 - settings.SizeX / 2) * settings.CellSize + settings.CellSize / 2
+		local worldZ = (centerZ - 1 - settings.SizeZ / 2) * settings.CellSize + settings.CellSize / 2
+		local centerWorldPos = Vector3.new(worldX, 1.0, worldZ) -- Höhe 1.0 Studs, da die Box 2 Studs hoch ist
+		
+		local part = Instance.new("Part")
+		part.Name = deityId .. "_" .. objId
+		part.Size = Vector3.new(profile.Width * settings.CellSize - 0.1, 2, profile.Length * settings.CellSize - 0.1) -- Leicht kleiner für Spaltmaß
+		part.CFrame = CFrame.new(centerWorldPos) * CFrame.Angles(0, math.rad(rotation), 0)
+		part.Material = Enum.Material.Marble
+		part.Color = Color3.fromRGB(180, 180, 200) -- Schönes Marmor-Grau für Monumente!
+		part.Anchored = true
+		part.CanCollide = true
+		part.Parent = placedObjectsFolder
+	end
+
 	return true
 end
 
