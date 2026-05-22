@@ -5,6 +5,7 @@ local HttpService = game:GetService("HttpService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local PlayerDataStore = require(script.Parent.PlayerDataStore)
 local GridConfig = require(ReplicatedStorage.Shared.GridConfig)
+local GridMath = require(ReplicatedStorage.Shared.GridMath)
 
 export type PlacedObject = {
 	Id: string,
@@ -46,52 +47,19 @@ function GridModule.GetOrCreateGrid(player: Player): PlayerGrid
 			Cells = cells,
 		}
 		grids[player] = grid
+
+		-- Leeren Zustand initial auf dem Spieler-Objekt für den Client synchronisieren
+		player:SetAttribute("CitadelPlacedObjects", "{}")
 	end
 	return grid
 end
 
 function GridModule.WorldToCellCoords(worldPos: Vector3): (number, number)
-	local settings = GridConfig.Settings
-	local cellX = math.floor(worldPos.X / settings.CellSize) + (settings.SizeX / 2) + 1
-	local cellZ = math.floor(worldPos.Z / settings.CellSize) + (settings.SizeZ / 2) + 1
-	return cellX, cellZ
+	return GridMath.WorldToCellCoords(worldPos)
 end
 
 function GridModule.CheckPlacementValidity(grid: PlayerGrid, deityId: string, cellX: number, cellZ: number, rotation: number): (boolean, { {number} }?)
-	local profile = GridConfig.DeityProfiles[deityId]
-	if not profile then
-		return false, nil
-	end
-
-	local settings = GridConfig.Settings
-	local w = profile.Width
-	local l = profile.Length
-
-	-- Dimensionen tauschen bei 90 oder 270 Grad Rotation
-	if rotation == 90 or rotation == 270 then
-		w, l = l, w
-	end
-
-	-- Out-of-bounds Check
-	if cellX < 1 or (cellX + w - 1) > settings.SizeX then
-		return false, nil
-	end
-	if cellZ < 1 or (cellZ + l - 1) > settings.SizeZ then
-		return false, nil
-	end
-
-	-- Kollisionsprüfung (Zellbelegung)
-	local cellsToOccupy = {}
-	for x = cellX, cellX + w - 1 do
-		for z = cellZ, cellZ + l - 1 do
-			if grid.Cells[x] and grid.Cells[x][z] then
-				return false, nil -- Zelle ist bereits belegt!
-			end
-			table.insert(cellsToOccupy, {x, z})
-		end
-	end
-
-	return true, cellsToOccupy
+	return GridMath.CheckPlacementValidity(grid.Cells, deityId, cellX, cellZ, rotation)
 end
 
 function GridModule.PlaceObject(player: Player, deityId: string, cellX: number, cellZ: number, rotation: number): boolean
@@ -140,6 +108,10 @@ function GridModule.PlaceObject(player: Player, deityId: string, cellX: number, 
 	end
 
 	grid.Objects[objId] = placedObj
+
+	-- Gitterzustand auf dem Spieler-Objekt für den Client replizieren
+	player:SetAttribute("CitadelPlacedObjects", HttpService:JSONEncode(grid.Objects))
+
 	return true
 end
 

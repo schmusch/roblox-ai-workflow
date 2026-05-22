@@ -71,6 +71,38 @@ return function()
 			expect(grid.Cells[4][4]).to.be.ok()
 		end)
 
+		it("sollte den Gitterzustand nach erfolgreicher Platzierung über Spieler-Attribute replizieren (JSON-Sync)", function()
+			local HttpService = game:GetService("HttpService")
+			
+			-- Initialer Zustand
+			local grid = GridModule.GetOrCreateGrid(testPlayer)
+			local initialAttr = testPlayer:GetAttribute("CitadelPlacedObjects")
+			expect(initialAttr).to.equal("{}")
+			
+			-- Platziere ein Monument
+			local success = GridModule.PlaceObject(testPlayer, "old_forest_spirit", 3, 3, 0)
+			expect(success).to.equal(true)
+			
+			-- Nach der Platzierung muss das Attribut befüllt sein
+			local attributeVal = testPlayer:GetAttribute("CitadelPlacedObjects")
+			expect(attributeVal).to.be.ok()
+			
+			local decoded = HttpService:JSONDecode(attributeVal)
+			expect(decoded).to.be.ok()
+			
+			-- Finde das platzierte Objekt in den JSON-Daten
+			local found = false
+			for _, obj in pairs(decoded) do
+				if obj.DeityId == "old_forest_spirit" then
+					found = true
+					expect(obj.OriginX).to.equal(3)
+					expect(obj.OriginZ).to.equal(3)
+					expect(obj.Rotation).to.equal(0)
+				end
+			end
+			expect(found).to.equal(true)
+		end)
+
 		it("sollte Kollisionen (überlappende Platzierungen) blockieren", function()
 			-- Platziere erstes 2x2 Monument auf (3,3)
 			local firstSuccess = GridModule.PlaceObject(testPlayer, "old_forest_spirit", 3, 3, 0)
