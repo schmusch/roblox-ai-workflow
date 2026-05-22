@@ -1,0 +1,40 @@
+{
+  "name": "GodsAndIcons",
+  "tree": {
+    "$className": "DataModel",
+    "ReplicatedStorage": {
+      "$className": "ReplicatedStorage",
+      "Shared": {
+        "$path": "src/shared"
+      },
+      "Events": {
+        "$className": "Folder",
+        "InterventionRemote": {
+          "$className": "RemoteEvent"
+        },
+        "PlacementRemote": {
+          "$className": "RemoteEvent"
+        }
+      }
+    },
+    "ServerScriptService": {
+      "$className": "ServerScriptService",
+      "Server": {
+        "$path": "src/server"
+      },
+      "Modules": {
+        "$className": "Folder",
+        "$path": "src/server/modules"
+      }
+    },
+    "StarterPlayer": {
+      "$className": "StarterPlayer",
+      "StarterPlayerScripts": {
+        "$className": "StarterPlayerScripts",
+        "Client": {
+          "$path": "src/client"
+        }
+      }
+    }
+  }
+}

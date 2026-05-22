@@ -1,0 +1,8 @@
+std = "roblox"
+
+[rules]
+multiple_statements = "allow"
+empty_if = "warn"
+shadowing = "warn"
+unbalanced_assignments = "error"
+uppercase_local = "allow"

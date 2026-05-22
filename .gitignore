@@ -16,6 +16,8 @@ desktop.ini
 *.swp
 *.swo
 *~
+.bin/
+
 
 # Node (if anyone adds tooling later)
 node_modules/
