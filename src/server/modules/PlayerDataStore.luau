@@ -34,6 +34,12 @@ function PlayerDataStore.adjustBelief(player: Player, amount: number): boolean
 		return false -- Nicht genügend Glaubenspunkte!
 	end
 	state.Belief = state.Belief + amount
+	
+	-- Synchronisiere den aktuellen Kontostand auf dem Spieler-Objekt für den Client (JSON-Sync bypass via native Attribute)
+	pcall(function()
+		(player :: any):SetAttribute("CitadelBelief", state.Belief)
+	end)
+	
 	return true
 end
 

@@ -166,5 +166,36 @@ return function()
 			-- Bei 10 Belief/Sekunde erzeugen 0.5 Sekunden exakt 5 Belief. Neuer Stand: 515!
 			expect(state.Belief).to.equal(515)
 		end)
+
+		it("sollte den Glaubensstand nach Anpassungen über Spieler-Attribute replizieren", function()
+			-- MockPlayer hat initial 1000 in _attributes gesetzt (siehe createMockPlayer)
+			-- und adjustBelief wird gerufen bei getPlayerState initial. Aber weil der MockPlayer
+			-- getPlayerState Belief=1000 hat, rufen wir erst adjustBelief auf.
+			local success = PlayerDataStore.adjustBelief(testPlayer, -200)
+			expect(success).to.equal(true)
+			expect(testPlayer:GetAttribute("CitadelBelief")).to.equal(800)
+			
+			success = PlayerDataStore.adjustBelief(testPlayer, 300)
+			expect(success).to.equal(true)
+			expect(testPlayer:GetAttribute("CitadelBelief")).to.equal(1100)
+		end)
+
+		it("sollte die passive Glaubensgenerierungsrate nach Platzierungen über Spieler-Attribute replizieren", function()
+			-- Initialer Zustand
+			local grid = GridModule.GetOrCreateGrid(testPlayer)
+			expect(testPlayer:GetAttribute("CitadelBeliefRate")).to.equal(0)
+			
+			-- Platziere erstes Monument
+			local success = GridModule.PlaceObject(testPlayer, "old_forest_spirit", 1, 1, 0)
+			expect(success).to.equal(true)
+			
+			-- Jedes old_forest_spirit Monument generiert 10 Belief/s
+			expect(testPlayer:GetAttribute("CitadelBeliefRate")).to.equal(10)
+			
+			-- Platziere zweites Monument
+			success = GridModule.PlaceObject(testPlayer, "old_forest_spirit", 3, 3, 0)
+			expect(success).to.equal(true)
+			expect(testPlayer:GetAttribute("CitadelBeliefRate")).to.equal(20)
+		end)
 	end)
 end

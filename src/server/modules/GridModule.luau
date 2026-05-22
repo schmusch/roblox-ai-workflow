@@ -50,6 +50,9 @@ function GridModule.GetOrCreateGrid(player: Player): PlayerGrid
 
 		-- Leeren Zustand initial auf dem Spieler-Objekt für den Client synchronisieren
 		player:SetAttribute("CitadelPlacedObjects", "{}")
+		pcall(function()
+			(player :: any):SetAttribute("CitadelBeliefRate", 0)
+		end)
 	end
 	return grid
 end
@@ -111,6 +114,18 @@ function GridModule.PlaceObject(player: Player, deityId: string, cellX: number, 
 
 	-- Gitterzustand auf dem Spieler-Objekt für den Client replizieren
 	player:SetAttribute("CitadelPlacedObjects", HttpService:JSONEncode(grid.Objects))
+
+	-- Belief-Rate neu berechnen und replizieren
+	local totalBeliefPerSecond = 0
+	for _, obj in pairs(grid.Objects) do
+		local prof = GridConfig.DeityProfiles[obj.DeityId]
+		if prof then
+			totalBeliefPerSecond = totalBeliefPerSecond + prof.BeliefPerSecond
+		end
+	end
+	pcall(function()
+		(player :: any):SetAttribute("CitadelBeliefRate", totalBeliefPerSecond)
+	end)
 
 	-- Physisches Objekt in Workspace instanziieren (nur für echte Spieler im Live-Spiel)
 	local isRealPlayer = typeof(player) == "Instance" and player:IsA("Player")

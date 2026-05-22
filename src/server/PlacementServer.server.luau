@@ -29,6 +29,13 @@ local function onPlayerAdded(player: Player)
 	local state = PlayerDataStore.getPlayerState(player)
 	state.Belief = 2000
 	state.Inventory["old_forest_spirit"] = 5
+	
+	-- Native Attribute für Replikation an das Client-UI setzen
+	pcall(function()
+		player:SetAttribute("CitadelBelief", 2000)
+		player:SetAttribute("CitadelBeliefRate", 0)
+	end)
+	
 	print(string.format("[PlacementServer] Startguthaben für %s initialisiert: 2000 Belief, 5x old_forest_spirit.", player.Name))
 end
 
