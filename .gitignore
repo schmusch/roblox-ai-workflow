@@ -1,7 +1,11 @@
 # Upstream RCS clone (separate repo, not part of this project)
 roblox-ai-os/
 
-# OS junk
+# Roblox Studio temporary & lock files
+*.lock
+*.log
+
+# OS generated files
 .DS_Store
 Thumbs.db
 desktop.ini
@@ -20,7 +24,6 @@ node_modules/
 dist/
 build/
 *.tmp
-*.log
 
 # Local Claude Code session state (if accidentally placed here)
 .claude/
@@ -29,3 +32,11 @@ build/
 .env
 .env.*
 !.env.example
+
+# Wally packages (if used)
+.wally/
+Packages/
+ServerPackages/
+
+# Rojo build artifacts
+*.rbxlx.temp

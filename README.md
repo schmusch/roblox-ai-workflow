@@ -1,68 +1,173 @@
-# Roblox AI-Workflow
+# 🏛️ Gods & Icons: Tactical Tycoon & Creed
 
-A Single-Source-of-Truth (SSOT) skill set for AI-assisted Roblox game development across **Claude Code**, **Gemini CLI**, and **Codex** / generic agents.
+Willkommen im offiziellen Entwickler-Portal und der System-Dokumentation für **Gods & Icons**. Dieses Repository enthält die vollständige konzeptionelle und technische Planung für ein hochgradig optimiertes, cheat-resistentes Roblox-Erlebnis der nächsten Generation (optimiert für das lukrative US-18+-Premium-DevEx-Segment).
 
-Inspired by [JustineDevs/roblox-ai-os (RCS)](https://github.com/JustineDevs/roblox-ai-os) — the workflow concepts, psychology framework, and Roblox-native guardrails are adapted to Claude Code's native skill system and made platform-portable.
+Dieses Projekt nutzt ein fortschrittliches **Roblox AI-Workflow System (SSOT)**, um eine reibungslose und hocheffiziente Entwicklung in Zusammenarbeit mit KI-Assistenten (wie Claude Code, Gemini CLI und Codex) zu garantieren.
 
-## Structure
+---
+
+## 🌌 Core Game Loop & Experience
+
+**Gods & Icons** verbindet das tiefe, optimierende Gameplay eines brutalistischen Tycoons mit der taktischen Tiefe eines latenz-kompensierten 3x3 Auto-Battlers:
+* **Die Zitadelle (Tycoon):** Spieler errichten Monumente und Andachtsstätten auf einem zellularen Gitter, um Glauben (`Belief`) zu erzeugen, während sie metaphysische Risse und Daten-Glitches in Schach halten.
+* **Der Glaubenskrieg (Auto-Battler):** Formlose, metaphysische Gottheiten (Alte Götter aus Stein vs. Neue Götter aus Chrom) treten in taktischen Rastern gegeneinander an. Die Spieler greifen durch mächtige, latenz-kompensierte Interventionen aktiv ein.
+
+---
+
+## 🤖 AI-Workflow & Copilot Integration (SSOT)
+
+Dieses Repository ist als **Single Source of Truth (SSOT)** für KI-gestützte Entwicklung konzipiert. Es enthält vordefinierte Fähigkeiten ("Skills") und Entwicklungsrichtlinien, die von KIs direkt gelesen und ausgeführt werden können:
+
+* **[CLAUDE.md](file:///g:/Meine%20Ablage/Projekte/GameDev/Roblox/Gods%20and%20Icons/CLAUDE.md):** Einstiegspunkt und Skill-Katalog für **Claude Code**.
+* **[GEMINI.md](file:///g:/Meine%20Ablage/Projekte/GameDev/Roblox/Gods%20and%20Icons/GEMINI.md):** Einstiegspunkt und Skill-Katalog für **Gemini CLI**.
+* **[AGENTS.md](file:///g:/Meine%20Ablage/Projekte/GameDev/Roblox/Gods%20and%20Icons/AGENTS.md):** Universeller Einstiegspunkt für **Codex** und andere LLM-Agenten.
+
+### ⚙️ Kern-Arbeitsablauf (Canonical Workflow)
+```
+roblox-brief  →  roblox-blueprint  →  roblox-forge
+```
+KIs folgen diesem Dreischritt (Anforderungsanalyse → Technische Spezifikation → Implementierung), um höchste Softwarequalität und absolute Übereinstimmung mit dem Spieldesign sicherzustellen.
+
+---
+
+## 📂 Workspace Map & Documentation Portal
+
+Die Verzeichnisstruktur vereint Spieldateien, systematische Spieldesign-Dokumente und die AI-Workflow-Infrastruktur:
 
 ```
-.
-├── CLAUDE.md           # Claude Code entry point
-├── GEMINI.md           # Gemini CLI entry point
-├── AGENTS.md           # Codex / generic entry point
-├── README.md           # this file
-│
-├── skills/             # SSOT — 36 Roblox-focused skills (Phase 1 + Phase 2)
-├── references/         # shared docs (vocabulary, psychology, server-authority, etc.)
-├── docs/               # design specs
-├── plans/              # implementation plans (incl. Phase 2)
-└── roblox-ai-os/       # the cloned upstream RCS repo (inspiration source)
+[Root]
+ ├── 📄 Place1.rbxl            # Die primäre Roblox Studio Place-Datei
+ ├── 📄 CLAUDE.md              # Claude Code Einstiegspunkt (AI SSOT)
+ ├── 📄 GEMINI.md              # Gemini CLI Einstiegspunkt (AI SSOT)
+ ├── 📄 AGENTS.md              # Codex/Agenten Einstiegspunkt (AI SSOT)
+ ├── 📄 README.md              # Dieses Entwickler-Portal & Navigation
+ ├── 📁 Planung/               # Zentraler Spieldesign- & Planungsordner
+ │    ├── 📄 00.1_Game-Brief.md
+ │    ├── 📄 00.2_Gods-and-Icons-Blueprint.md
+ │    ├── 📁 01_GDD-Basis/      # Ebene 01 - Spieldesign & Ökonomie
+ │    ├── 📁 02_Spezifikationen/# Ebene 02 - Technische Spezifikationen
+ │    └── 📁 03_Analysen-Audits/# Ebene 03 - System-Audits & Marktanalysen
+ ├── 📁 skills/                # SSOT - 36 Roblox-spezifische KI-Fähigkeiten
+ ├── 📁 references/            # Geteilte Referenzen (Vokabular, Sicherheit, etc.)
+ └── 📁 plans/                 # Technische Implementierungspläne der KI
 ```
 
-## Quick start
+---
 
-### In Claude Code
+## 🧭 Navigations- & Leseempfehlung (Spieldokumente)
 
-1. `cd "G:\Meine Ablage\Projekte\GameDev\Roblox\AI-Workflow"` — Claude Code auto-loads `CLAUDE.md`
-2. Start with a request like *"Hilf mir, ein Tycoon-Spiel zu planen"* — Claude will invoke `roblox-brief` then `roblox-blueprint`.
+Nutze die folgende Tabelle, um direkt in die Teildomänen einzusteigen. Jedes Dokument ist vollständig verlinkt und kurz beschrieben:
 
-### In Gemini CLI
+| Ebene | Datei | Beschreibung | Kerninhalte |
+| :---: | :--- | :--- | :--- |
+| **00** | [00.1_Game-Brief.md](file:///g:/Meine%20Ablage/Projekte/GameDev/Roblox/Gods%20and%20Icons/Planung/00.1_Game-Brief.md) | **Projekt-Zusammenfassung** | Core Loop, Zielgruppe (US 18+), Monetarisierungs-Konzept, grober Rahmen. |
+| **00** | [00.2_Gods-and-Icons-Blueprint.md](file:///g:/Meine%20Ablage/Projekte/GameDev/Roblox/Gods%20and%20Icons/Planung/00.2_Gods-and-Icons-Blueprint.md) | **Technische Architektur** | Server/Client Ownership Matrix, Datei-Layout, Luau-Typen, Remote-Protokolle. |
+| **01** | [01.1_Goetter-Design-Framework.md](file:///g:/Meine%20Ablage/Projekte/GameDev/Roblox/Gods%20and%20Icons/Planung/01_GDD-Basis/01.1_Goetter-Design-Framework.md) | **Visuelles Framework** | Ästhetischer Kontrast (Pantheon-Noir), R15-Rig-Anpassung, SLIM-LOD-System. |
+| **01** | [01.2_Goetter-Tempel-Wirtschaft.md](file:///g:/Meine%20Ablage/Projekte/GameDev/Roblox/Gods%20and%20Icons/Planung/01_GDD-Basis/01.2_Goetter-Tempel-Wirtschaft.md) | **Tycoon-System** | Asymmetrische Wirtschaft, zellulares Gitter, Glaubensgenerierung, Katastrophen. |
+| **01** | [01.3_Goetter-Kampf-Framework.md](file:///g:/Meine%20Ablage/Projekte/GameDev/Roblox/Gods%20and%20Icons/Planung/01_GDD-Basis/01.3_Goetter-Kampf-Framework.md) | **Kampfsystem** | 3x3 Auto-Battler, Einheiten-Rollen, euklidisches Targeting, Interventionen. |
+| **01** | [01.4_Goetter-Evolution.md](file:///g:/Meine%20Ablage/Projekte/GameDev/Roblox/Gods%20and%20Icons/Planung/01_GDD-Basis/01.4_Goetter-Evolution.md) | **Progressions-Loop** | Prestige-System (Rebirth), Sakrale Fusion (Breeding), Gacha-Pity-System. |
+| **01** | [01.5_Monetarisierung-Viralitaet.md](file:///g:/Meine%20Ablage/Projekte/GameDev/Roblox/Gods%20and%20Icons/Planung/01_GDD-Basis/01.5_Monetarisierung-Viralitaet.md) | **Wirtschaft & Social** | Fair-Play VIP-Server, Roblox Moments Integration, Sharing-Richtlinien. |
+| **02** | [02.1_Spieldesign-Spielerpsychologie-Optimierung.md](file:///g:/Meine%20Ablage/Projekte/GameDev/Roblox/Gods%20and%20Icons/Planung/02_Spezifikationen/02.1_Spieldesign-Spielerpsychologie-Optimierung.md) | **Spielerpsychologie Spec** | Mastery/Progression/Status Motivationsschleifen, Burnout-Guardrails, Recovery-Pfade. |
+| **02** | [02.2_Server-Authoritative-Tempel-Wirtschaft-Spezifikation.md](file:///g:/Meine%20Ablage/Projekte/GameDev/Roblox/Gods%20and%20Icons/Planung/02_Spezifikationen/02.2_Server-Authoritative-Tempel-Wirtschaft-Spezifikation.md) | **Netzwerk & Grid Spec** | Anti-Cheat Remote-Validierung, geometrische Kollisionsprüfung, Speicheroptimierung. |
+| **02** | [02.3_Zero-Allocation-Latency-Rollback-Spezifikation.md](file:///g:/Meine%20Ablage/Projekte/GameDev/Roblox/Gods%20and%20Icons/Planung/02_Spezifikationen/02.3_Zero-Allocation-Latency-Rollback-Spezifikation.md) | **Combat Performance Spec** | Binärer Ringpuffer mit Luau `buffer`, Latenz-Prediction und 90-Frame-Rollback. |
+| **02** | [02.4_TDD-Framework-Toolchain-Spezifikation.md](file:///g:/Meine%20Ablage/Projekte/GameDev/Roblox/Gods%20and%20Icons/Planung/02_Spezifikationen/02.4_TDD-Framework-Toolchain-Spezifikation.md) | **TDD- & Tooling-Setup** | TestEZ-Unit-Tests, Rojo-Projektmapping, Wally-Bibliotheksverwaltung. |
+| **03** | [03.1_Roblox-Spielentwicklung-Marktanalyse-Strategie.md](file:///g:/Meine%20Ablage/Projekte/GameDev/Roblox/Gods%20and%20Icons/Planung/03_Analysen-Audits/03.1_Roblox-Spielentwicklung-Marktanalyse-Strategie.md) | **Marktanalyse** | DevEx US-Ages-18+-Analyse (42%-Marge), KPI-Tracking, Release-Strategie. |
+| **03** | [03.2_Comprehensive-Architecture-Audit.md](file:///g:/Meine%20Ablage/Projekte/GameDev/Roblox/Gods%20and%20Icons/Planung/03_Analysen-Audits/03.2_Comprehensive-Architecture-Audit.md) | **Architektur-Tiefenaudit** | Aufdeckung mathematischer Schwachstellen, Speicherlecks und Behebung kritischer Bugs. |
+| **03** | [03.3_GDD-AI-OS-Alignment-Audit.md](file:///g:/Meine%20Ablage/Projekte/GameDev/Roblox/Gods%20and%20Icons/Planung/03_Analysen-Audits/03.3_GDD-AI-OS-Alignment-Audit.md) | **Brücke GDD & Technik** | Validierungs-Matrix, Anti-Cheat-Absicherung, Code- und Test-Blueprints. |
+| **03** | [03.4_Goetter-Framework-Analyse.md](file:///g:/Meine%20Ablage/Projekte/GameDev/Roblox/Gods%20and%20Icons/Planung/03_Analysen-Audits/03.4_Goetter-Framework-Analyse.md) | **Götter-Katalog & Stats** | Detaillierte mathematische Profile der Götter, Buff-Radien, Balancing-Kurven. |
 
-1. `cd` to the same workspace — Gemini reads `GEMINI.md`
-2. Use `activate_skill` with a name from the catalog, or describe the task and Gemini will pick the matching skill.
+---
 
-### In Codex / other agents
+## 🛠️ Technical Reference & Cheat Sheet
 
-1. Point the agent at `AGENTS.md`.
-2. Skills are plain Markdown — the agent reads them directly.
+Dieses Kapitel dient als direkte Referenz für Entwickler und das AI-Betriebssystem. Es fasst die wichtigsten mathematischen Formeln, Systemkonfigurationen und die Ergebnisse des Sicherheitsaudits zusammen.
 
-## What's in Phase 1 (built)
+### 📐 1. Core Mathematical Systems
 
-21 Roblox-specific skills covering: creator brief, Roblox-native planning, Studio-MCP execution, the 5-driver player-psychology framework (progression / status / FOMO / mastery / community), three reward-loop types (reward, daily, event), social mechanics, retention design, anti-slop (enterprise-jargon removal), visual verification, the pre-action gate, and Studio-MCP integration patterns.
+#### A. Orbit-Halos & Rotationsfrequenzen
+Die Orbitalradien $R_L$ der Schwebeteile um die formlosen Götter skalieren mit der Andachtsstufe $L \in \{1, 2, 3\}$ über den Goldenen Schnitt ($\phi \approx 1{,}618$). Die Rotationsgeschwindigkeit $\omega_L$ wird gedämpft, um epileptische Trigger oder unruhige Visuals zu verhindern. 
 
-See `CLAUDE.md` for the full catalog with one-line descriptions of each.
+> [!CAUTION]
+> **Level 0 Division-by-Zero Fix:**
+> Die mathematische Formulierung der Frequenz wurde gehärtet, um Divisionen durch Null bei $L = 0$ (uninitialisierte Rigs) zu verhindern, die zum Absturz der Roblox-Physik-Engine führen:
+> 
+> $$R_L = R_0 \cdot \phi^L \quad \text{und} \quad \omega_L = \frac{\omega_0}{\sqrt{\max(1, L)}}$$
 
-## What's in Phase 2 (built)
+#### B. Progression & Rebirth
+Die Generierung Sakraler Funken $P$ bei einem Rebirth-Reset in Abhängigkeit von den passiv generierten Glaubenspunkten $B$ folgt einer degressiven Wurzelkurve:
 
-15 portable workflow / quality skills that bring SSOT parity to Gemini CLI and Codex (which don't ship the `superpowers:*` family):
+$$P = \left\lfloor \sqrt{\frac{B}{C_{\text{epoche}}}} \right\rfloor$$
 
-- **Process & planning:** `roblox-deep-interview`, `roblox-plan`, `roblox-analyze`, `roblox-deepsearch`, `roblox-tdd`, `roblox-build-fix`, `roblox-git-master`, `roblox-forge-init`, `roblox-ask-other-model`
-- **Multi-agent execution:** `roblox-team`, `roblox-autopilot`, `roblox-ultrawork`
-- **Quality lanes:** `roblox-code-review`, `roblox-security-review`, `roblox-ultraqa`
+#### C. Sakrale Fusion (Zucht)
+Die Wahrscheinlichkeit $P_{\text{besser}}$, bei der Verschmelzung zweier Gottheiten einen besseren Status-Wert als die Eltern zu erhalten, hängt von der Tempel-Stimulation $S \in [0, 100]$ ab (keine langweilige Mittelwert-Mischung!):
 
-Plus 3 new reference docs: `references/roblox-test-patterns.md`, `references/roblox-security-audit-checklist.md`, `references/roblox-build-toolchain.md`.
+$$P_{\text{besser}} = \frac{1{,}0 + 0{,}01 \cdot S}{2{,}0 + 0{,}01 \cdot S}$$
 
-Total skill count: **36**. See `CLAUDE.md` for the full catalog.
+---
 
-## Design principles
+### 💾 2. Perfect-Aligned Combat-Buffer (16-Byte Design)
 
-- **Server authority is non-negotiable** — clients request, server validates, server mutates.
-- **Roblox vocabulary over enterprise jargon** — `RemoteEvent`, not `Controller`. `ModuleScript`, not `Repository`. `DataStoreService`, not `database`.
-- **Evidence before assertions** — never claim "done" from static inspection when behavior depends on replication / remotes / DataStore.
-- **Psychology backward from player desire** — design loops from what the player actually wants, not from feature lists.
-- **Platform-neutral skill content** — skill instructions don't name specific tools so they work in Claude Code, Gemini CLI, and Codex.
+Um Luau-Müll (Garbage Collection) im 60-Hz-Kampftakt vollständig zu vermeiden, wird ein binärer Ringpuffer über die native `buffer`-Bibliothek betrieben (Kapazität für 90 Frames / 1,5 Sekunden).
 
-## Source attribution
+```
+Slot-Byte-Layout (16 Bytes, 100% Aligned):
++-----------------------------------------------------------------------------------------------+
+| Byte 0      | Byte 1      | Byte 2 - 3            | Byte 4 - 7                                |
+| Active (u8) | TileIdx(u8) | CatalogIndex (uint16) | OwnerUserId (uint32)                      |
++-----------------------------------------------------------------------------------------------+
+| Byte 8 - 11               | Byte 12    | Byte 13  | Byte 14 - 15                              |
+| Health (float32)          | AP (u8)    | Padding  | StatusMask (uint16)                       |
++-----------------------------------------------------------------------------------------------+
+```
 
-The conceptual vocabulary, psychology framework, and pre-action protocol are derived from the [RCS project (MIT-licensed)](https://github.com/JustineDevs/roblox-ai-os) by [@JustineDevs](https://github.com/JustineDevs). This workspace is a Claude-Code-first reinterpretation; it does not bundle, re-publish, or claim authorship of RCS itself.
+* **Header-Größe:** $16 \text{ Bytes}$ (`0-3`: Tick [u32], `4-7`: Padding, `8-15`: Timestamp [f64/double]).
+* **Frame-Größe ($S_{\text{frame}}$):**
+  $$S_{\text{frame}} = 16 + (18 \cdot 16) = 304\text{ Bytes}$$
+* **Puffer-Gesamtgröße ($S_{\text{buffer}}$) für 90 Frames:**
+  $$S_{\text{buffer}} = 90 \cdot 304 = 27.360\text{ Bytes}$$
+
+---
+
+### ⚡ 3. Voxel-Grid: Zero-Allocation Indexing
+
+Kollisions- und Aurenprüfungen im Voxel-Raster der Zitadelle generierten zuvor Heap-Strings via `string.format("%d_%d_%d")`, was zu massiven GC-Spikes führte.
+
+#### Mathematische Bit-Codierung (Zero-Allocation):
+Da die Rastergrenzen $64 \times 64 \times 64$ nicht überschreiten, codieren wir dreidimensionale Koordinaten direkt in einen einzigen 32-Bit-Integer:
+
+$$\text{Index} = (Z \ll 20) + (Y \ll 10) + X$$
+
+```luau
+local function getCellIndex(x: number, y: number, z: number): number
+    return bit32.lshift(z, 20) + bit32.lshift(y, 10) + x
+end
+```
+
+---
+
+### 🚨 4. Critical Security & Engineering Audits
+
+#### A. R15 Torso-Deformations-Bug (Engine-Bug)
+* **Problem:** Beim Instanziieren der abstrakten Götter-Geometrie an ein transparentes R15-Skelett löscht die Engine Knochenverbindungen im Torso, wenn die Avatar-Struktur ohne AJU geladen wird.
+* **Lösung:** Im Roblox-Projekt muss die Eigenschaft `Workspace.AvatarJointUpgrade` permanent auf `Enabled` gesetzt sein.
+
+#### B. Rojo-Pfadkollision im ServerScriptService
+* **Problem:** Doppelte Pfad-Replizierung in Roblox Studio, da sowohl `src/server` als auch `src/server/modules` in `default.project.json` überlappend gemappt waren.
+* **Lösung:** Strikt getrennte Quellordner im Dateisystem und Rojo-Tree:
+  ```json
+  "ServerScriptService": {
+    "Scripts": { "$path": "src/server/scripts" },
+    "Modules": { "$path": "src/server/modules" }
+  }
+  ```
+
+#### C. Heap-Memory-Leak in Grid-Bereinigung
+* **Problem:** Das Zuweisen von `nil` an Felder innerhalb von Tabellen (`{ OccupiedByDeityId = nil }`) löscht den Koordinatenschlüssel nicht. Bei häufigem Umbau sammelt die Gittertabelle verwaiste Tabellenleichen, was Mobilgeräte zum Absturz bringt.
+* **Lösung:** Vollständiges Entfernen des Schlüssels aus dem Diktionär:
+  ```luau
+  grid.Cells[cellIndex] = nil
+  ```
+
+#### D. TDD TestEZ Mocking Crash
+* **Problem:** Der Mock-Player im TDD-Test mied die Struktur für das Inventar und wies stattdessen eine nackte Zahl zu (`Inventory = { ["old_forest_spirit"] = 1 }`), was zu einem Absturz bei Eigentumsprüfungen (`attempt to index number with 'IsPlaced'`) führte.
+* **Lösung:** Bereitstellung eines präzise typisierten Mock-Objekts, das alle Attribute und Metamethoden eines echten Players und dessen ProfileService-State abbildet.
