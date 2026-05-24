@@ -5,6 +5,7 @@ export type DeityGridProfile = {
 	Width: number,            -- Breite in Gitterzellen (X)
 	Length: number,           -- Länge in Gitterzellen (Z)
 	BeliefPerSecond: number,  -- Passive Glaubensgenerierung pro Sekunde
+	DisplayName: string,      -- Anzeigename im Baumenü
 }
 
 export type GridSettings = {
@@ -28,6 +29,19 @@ GridConfig.DeityProfiles = {
 		Width = 2,
 		Length = 2,
 		BeliefPerSecond = 10, -- Erzeugt passiv 10 Glaubenspunkte pro Sekunde
+		DisplayName = "Forest Spirit",
+	},
+	["sun_temple"] = {
+		Width = 3,
+		Length = 3,
+		BeliefPerSecond = 35,
+		DisplayName = "Sun Temple",
+	},
+	["water_shrine"] = {
+		Width = 1,
+		Length = 3,
+		BeliefPerSecond = 5,
+		DisplayName = "Water Shrine",
 	},
 } :: { [string]: DeityGridProfile }
 

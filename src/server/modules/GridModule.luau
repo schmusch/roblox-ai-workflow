@@ -31,6 +31,8 @@ local grids: { [Player]: PlayerGrid } = {}
 -- Preis-Katalog für Gottheiten (Server-seitige Single Source of Truth)
 local DEITY_PRICES: { [string]: number } = {
 	["old_forest_spirit"] = 500,
+	["sun_temple"] = 1200,
+	["water_shrine"] = 300,
 }
 
 function GridModule.GetOrCreateGrid(player: Player): PlayerGrid

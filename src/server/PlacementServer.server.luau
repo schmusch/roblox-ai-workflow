@@ -24,19 +24,22 @@ end
 	PlacementModule.HandlePlacementRequest(player, deityId, gridCoords, rotation)
 end)
 
--- Startguthaben für beitretende Spieler einrichten (2000 Belief, 5x old_forest_spirit im Inventar)
+-- Startguthaben für beitretende Spieler einrichten (2000 Belief, Gottheiten im Inventar)
 local function onPlayerAdded(player: Player)
 	local state = PlayerDataStore.getPlayerState(player)
 	state.Belief = 2000
 	state.Inventory["old_forest_spirit"] = 5
+	state.Inventory["sun_temple"] = 2
+	state.Inventory["water_shrine"] = 4
 	
 	-- Native Attribute für Replikation an das Client-UI setzen
 	pcall(function()
 		player:SetAttribute("CitadelBelief", 2000)
 		player:SetAttribute("CitadelBeliefRate", 0)
+		player:SetAttribute("CitadelInventory", HttpService:JSONEncode(state.Inventory))
 	end)
 	
-	print(string.format("[PlacementServer] Startguthaben für %s initialisiert: 2000 Belief, 5x old_forest_spirit.", player.Name))
+	print(string.format("[PlacementServer] Startguthaben für %s initialisiert: 2000 Belief, 5x old_forest, 2x sun_temple, 4x water_shrine.", player.Name))
 end
 
 Players.PlayerAdded:Connect(onPlayerAdded)

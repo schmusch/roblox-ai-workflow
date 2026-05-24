@@ -1,4 +1,5 @@
 --!strict
+local HttpService = game:GetService("HttpService")
 local PlayerDataStore = {}
 
 type PlayerState = {
@@ -8,9 +9,16 @@ type PlayerState = {
 
 local States: { [Player]: PlayerState } = {}
 
+local function syncInventory(player: Player, state: PlayerState)
+	pcall(function()
+		(player :: any):SetAttribute("CitadelInventory", HttpService:JSONEncode(state.Inventory))
+	end)
+end
+
 -- Setzt den Zustand eines Spielers (wird fuer Initialisierung und Mocking in Tests genutzt)
 function PlayerDataStore.setPlayerState(player: Player, state: PlayerState)
 	States[player] = state
+	syncInventory(player, state)
 end
 
 -- Gibt den aktuellen Zustand des Spielers zurueck
@@ -62,6 +70,9 @@ function PlayerDataStore.consumeInventoryItem(player: Player, deityId: string): 
 	if state.Inventory[deityId] == 0 then
 		state.Inventory[deityId] = nil :: any -- Aus dem Diktionaer entfernen (Heap-Leak Schutz)
 	end
+	
+	syncInventory(player, state)
+	
 	return true
 end
 

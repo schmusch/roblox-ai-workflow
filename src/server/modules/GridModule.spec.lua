@@ -197,5 +197,26 @@ return function()
 			expect(success).to.equal(true)
 			expect(testPlayer:GetAttribute("CitadelBeliefRate")).to.equal(20)
 		end)
+
+		it("sollte das Inventar nach Anpassungen über Spieler-Attribute replizieren", function()
+			local HttpService = game:GetService("HttpService")
+			
+			-- Da createMockPlayer das Inventar mit 10 old_forest_spirit initialisiert,
+			-- sollte das CitadelInventory-Attribut diesen Stand als JSON enthalten.
+			local invAttr = testPlayer:GetAttribute("CitadelInventory")
+			expect(invAttr).to.be.ok()
+			
+			local decoded = HttpService:JSONDecode(invAttr)
+			expect(decoded["old_forest_spirit"]).to.equal(10)
+			
+			-- Simuliere den Konsum eines Items
+			local success = PlayerDataStore.consumeInventoryItem(testPlayer, "old_forest_spirit")
+			expect(success).to.equal(true)
+			
+			-- Attribut muss aktualisiert worden sein
+			invAttr = testPlayer:GetAttribute("CitadelInventory")
+			decoded = HttpService:JSONDecode(invAttr)
+			expect(decoded["old_forest_spirit"]).to.equal(9)
+		end)
 	end)
 end

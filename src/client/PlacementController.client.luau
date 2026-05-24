@@ -15,6 +15,16 @@ local camera = workspace.CurrentCamera
 local Events = ReplicatedStorage:WaitForChild("Events") :: Folder
 local placementRemote = Events:WaitForChild("PlacementRemote") :: RemoteEvent
 
+-- BindableEvent für Aktivierung aus anderen Skripten (z.B. Baumenü) einrichten
+local activatePlacementEvent = Events:FindFirstChild("ActivatePlacement")
+if not activatePlacementEvent then
+	local newEvent = Instance.new("BindableEvent")
+	newEvent.Name = "ActivatePlacement"
+	newEvent.Parent = Events
+	activatePlacementEvent = newEvent
+end
+local activatePlacementEventTyped = activatePlacementEvent :: BindableEvent
+
 -- Zustandsvariablen
 local active = false
 local currentDeityId = "old_forest_spirit" -- Standard-Monument für Platzierungstests
@@ -214,18 +224,18 @@ local function activatePlacement(deityId: string)
 	end)
 end
 
+-- BindableEvent für Aktivierung verknüpfen
+activatePlacementEventTyped.Event:Connect(function(deityId: string?)
+	if deityId and deityId ~= "" then
+		activatePlacement(deityId)
+	else
+		deactivatePlacement()
+	end
+end)
+
 -- Eingabe-Verarbeitung
 UserInputService.InputBegan:Connect(function(input, gameProcessed)
 	if gameProcessed then return end
-	
-	-- Aktivierung/Deaktivierung über Taste P
-	if input.KeyCode == Enum.KeyCode.P then
-		if active then
-			deactivatePlacement()
-		else
-			activatePlacement("old_forest_spirit")
-		end
-	end
 	
 	-- Tastenbefehle im aktiven Platzierungsmodus
 	if active then
