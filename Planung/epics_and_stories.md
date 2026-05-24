@@ -134,7 +134,22 @@ So that I can comfortably choose which deity to build.
 *   **And** the Deity Selection Menu updates card stocks, disabling and blurring cards whose stock is `0` or price is unaffordable.
 *   **And** clicking an active card launches the placement mode.
 
+### Story 1.6: Server-Authoritative Voxel-Kollision & Boundary Verification
+As a Citadelle Architect,
+I want a server-side voxel-collision and boundary verification system (`GridCollisionModule.luau`),
+So that malicious clients cannot stack meshes (voxel-stacking) or place deities outside the active Citadel grid coordinates.
+
+**Acceptance Criteria:**
+*   **Given** a placement request to the server
+*   **When** a monument is rotated (90 or 270 degrees)
+*   **Then** its width and length are geometrically transformed ($W' \leftarrow D, D' \leftarrow W$).
+*   **And** it checks that all target voxel coordinates ($F \subseteq \text{GridBounds}$) are inside citadel boundaries.
+*   **And** it checks that all target coordinates are empty ($\text{Grid}[c] = \emptyset$).
+*   **And** a TestEZ unit test validates that out-of-bounds placements are rejected.
+*   **And** a TestEZ unit test validates that overlapping placements are rejected.
+
 ---
+
 
 ## Epic 2: The Sacral Economy & Cataclysmic Voxel-Crises
 **Focus**: Handles randomized voxel catastrophe loops, damping areas, and cleaning mechanisms.
@@ -178,7 +193,36 @@ So that clients cannot teleport-cleanse or trigger instant-cleanses.
 *   **And** only then removes the catastrophe, unblocks the grid, and restores the full belief rates.
 *   **And** a TestEZ spec validates both instant-trigger and out-of-range exploit attempts.
 
+### Story 2.4: Anti-Speedhack Session Verification & Damped Offline Progression
+As a Core Player,
+I want a server-authoritative offline belief calculation system (`SessionVerificationModule.luau`),
+So that my progression is cheat-proof against local time dilation speedhacks and offline earnings are healthy damped.
+
+**Acceptance Criteria:**
+*   **Given** a player joining the game
+*   **When** calculating offline elapsed time $\Delta t = t_{\text{now}} - t_{\text{last\_save}}$
+*   **Then** the server uses absolute unix timestamps (`os.time()`), completely ignoring client-sent time.
+*   **And** offline earnings beyond a 12-hour limit ($T_{\text{cap}} = 43200$s) are progressively damped by 90% ($\gamma = 0.10$):
+    $$B_{\text{offline}} = R_p \cdot (t_{\text{effektiv}} + \gamma \cdot t_{\text{overflow}})$$
+*   **And** a heartbeat syncs the last active server time every 60 seconds to protect against data loss on crash.
+*   **And** a TestEZ test confirms that a 24-hour offline period generates exactly 55% of undamped earnings (43200s + 4320s).
+
+### Story 2.5: Synkretistischer Epochenübergang (Rebirth-System)
+As an High Priest,
+I want to sacrifice my current Citadel to transition into a new technological epoch (prestige-reset),
+So that I receive permanent meta-currencies (Sakrale Funken) and unlock deeper automation layers.
+
+**Acceptance Criteria:**
+*   **Given** I meet the epoch-transition criteria (hybrid deities owned, $10^9$ belief accumulated)
+*   **When** I trigger a prestige reset
+*   **Then** my current belief is wiped and all personal temple structures are removed.
+*   **And** I receive *Sakrale Funken* $P$ according to the sublinear conversion formula:
+    $$P = \left\lfloor \sqrt{\frac{B}{C_{\text{epoche}}}} \right\rfloor$$
+*   **And** the constant $C_{\text{epoche}}$ scales exponentially for higher epochs.
+*   **And** all mathematical calculations on the server run inside a dedicated **Mantissa-Exponent** structure (double mantissa, integer exponent) to prevent floating-point double overflows.
+
 ---
+
 
 ## Epic 3: The 3x3 Metaphysical Auto-Battler Combat System
 **Focus**: ZERO-allokation combat ticks, 90-frame rollback ring-buffers, and Euclid-distance targeting.
@@ -232,7 +276,32 @@ So that input feels snappy while maintaining absolute network protection.
 *   **And** the server locks the state for a 1.5-second "Ascension-Lock", giving the opponent a reaction window.
 *   **And** the server validates target ranges at the end of the lock, executing or discarding the spell authoritatively.
 
+### Story 3.5: Binary Ring-Buffer Packing Architecture (`RingBufferModule.luau`)
+As a Competitive Player,
+I want a binary packing and unpacking layout for combat frames in Luau memory,
+So that the 60Hz server heartbeat runs without garbage collection lag spikes.
+
+**Acceptance Criteria:**
+*   **Given** 18 deities deployed on a 3x3 arena
+*   **When** serializing the tick state
+*   **Then** all entity coordinates, HP, AP, and status masks are packed into a pre-allocated binary `buffer` of 284 bytes per frame.
+*   **And** a total ring-buffer capacity of 90 frames (25560 bytes) is allocated on startup.
+*   **And** a TestEZ benchmark validates that 10,000 packing steps do not allocate any heap memory (0 KB increase on `gcinfo()`).
+
+### Story 3.6: Server-Authoritative Latenz-Rollback-Validierer (`RollbackModule.luau`)
+As a Competitive Player,
+I want the server to authoritatively validate my intervention spells against historical buffer frames,
+So that network latency is compensated and malicious status exploits are prevented.
+
+**Acceptance Criteria:**
+*   **Given** an intervention remote request at `clientTick`
+*   **When** validated on the server
+*   **Then** the request is discarded if the tick difference $\Delta T = T_{\text{server}} - T_{\text{client}}$ exceeds 90 frames (1.5 seconds).
+*   **And** the server rolls back to `clientTick`, computes Euclidean range limits, and verifies that the targeted entity had $HP > 0$ at that exact moment.
+*   **And** if validation fails, the server rejects the spell and fires a `Correction` network packet to force the client to snap back to the authoritative tick.
+
 ---
+
 
 ## Epic 4: Divine Fusion & Persistent Genealogy
 **Focus**: Mathematical deity evolution scaling ($R_L = R_0 \cdot (1 + \ln(L + 1))$) and transactional ProfileService database safety.
@@ -263,7 +332,35 @@ So that I never lose precious deities during network blackouts.
 *   **Then** the operation is treated as an isolated transaction.
 *   **And** if a server crash occurs before completion, the fusion rolls back, restoring original deities to the player's profile.
 
+### Story 4.3: Sakrales Fusions- & Mendelsches Vererbungssystem
+As a Deity Breeder,
+I want a fusion chamber that strictly adheres to Mendelian inheritance laws and room stimulation formulas,
+So that I can strategically breed tactical hybrid deities without creating game-breaking stat inflation.
+
+**Acceptance Criteria:**
+*   **Given** two parent deities in the fusion transactional chamber
+*   **When** fusion is initiated
+*   **Then** only base statistics are inherited (base HP, base attack, base speed), ignoring any acquired bonus stats.
+*   **And** the inheritance chance of the superior stat $P_{\text{besser}}$ is dynamically driven by the room stimulation parameter $S \in [0, 100]$:
+    $$P_{\text{besser}} = \frac{1.0 + 0.01 \cdot S}{2.0 + 0.01 \cdot S}$$
+*   **And** the resulting hybrid deity receives a persistent `IsStabilized = true` flag and cannot be used as a parent for further fusions.
+*   **And** a player can "unfuse" a stabilized hybrid deity at any time for a belief fee, recovering both parent deities while losing the original fusion catalysts.
+*   **And** a TestEZ unit test validates inheritance probability distribution for stimulation values $S=0$ ($50\%$), $S=50$ ($60\%$) and $S=100$ ($100\%$).
+
+### Story 4.4: Raumkomfort- & Mutations-Steuerung
+As a Deity Breeder,
+I want my chamber's comfort parameter ($\mu$) and spatial room classification to influence fusion success and mutation probability,
+So that citadel optimization directly affects the evolution quality of my pantheon.
+
+**Acceptance Criteria:**
+*   **Given** a fusion process
+*   **When** the current room comfort $\mu$ is below the threshold $\mu_{\text{min}}$
+*   **Then** the fusion is strictly blocked.
+*   **When** room comfort is maximized ($\mu_{\text{max}}$) and configured as "Barracks" (combat mutation) or "Royal" (vitality mutation)
+*   **Then** it triggers unique, rare mutations giving the hybrid deities exclusive heritable passive talents.
+
 ---
+
 
 ## Epic 5: Noir Aesthetics & Lod-Mesh Swapping
 **Focus**: Pantheon-Noir chromatic aberration effects, dynamically alternating client aura loops, and light-weight LOD-mesh swaps.
@@ -290,3 +387,28 @@ So that my frame rate remains stable at 60 FPS.
 *   **When** their distance to the camera exceeds 150 studs
 *   **Then** the `SLIMController.client.luau` replaces them with simplified proxy models (under 100 triangles).
 *   **And** they are instantly restored to high-detail meshes once the camera moves within 150 studs.
+
+### Story 5.3: Glaube-Momente Video-Capture Integration
+As a Visual Enthusiast,
+I want my greatest tactical battle triumphs to be recorded automatically in the background,
+So that I can post clean cinematic clips to Roblox Moments without 2D HUD interferences.
+
+**Acceptance Criteria:**
+*   **Given** a dramatic in-game battle event (e.g. single survivor deity winning a round with 100% health)
+*   **When** triggered client-side
+*   **Then** the game automatically records a 30-second clean gameplay clip via `CaptureService:StartVideoCaptureAsync()`.
+*   **And** all game states (health, active synergy beams, damage indicators) are visualized in 3D in the workspace (monolith fractures, volumetric lasers, 3D rune texts), since Roblox automatically removes all 2D ScreenGuis in Moments clips.
+*   **And** an elegant post-game UI prompt offers the player options to save the capture locally (`PromptSaveCapturesToGallery`) or upload it to the Moments stream (`UploadCaptureAsync`).
+
+### Story 5.4: Konformes Moments-Sharing & PolicyService-Schutz
+As a Compliance-Focused Developer,
+I want the Moments sharing system to strictly adapt to players' age privacy settings,
+So that youth accounts are protected and the game remains compliant with global platform guidelines.
+
+**Acceptance Criteria:**
+*   **Given** a client loading the capture and moments sharing interfaces
+*   **When** verifying sharing policies
+*   **Then** the system checks user permissions via `PolicyService:IsContentSharingAllowed`.
+*   **And** if sharing is restricted (e.g. accounts under 16 years old), all capture galleries, upload buttons, and lobby moments-billboards are completely hidden and disabled.
+*   **And** shared moments are parameterized using `SocialService:PromptLinkSharing` with launch data, teleporting friends directly to the exact temple location and setup of the clip creator.
+
