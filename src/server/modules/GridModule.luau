@@ -191,3 +191,4 @@ game:GetService("Players").PlayerRemoving:Connect(function(player)
 end)
 
 return GridModule
+-- Cache purge sync v3
