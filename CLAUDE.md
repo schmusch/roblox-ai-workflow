@@ -46,6 +46,7 @@ When a user request maps to one of these skills, **invoke it before responding**
 - **`roblox-scrum-dev-story`** — Implement a story spec using TDD, StyLua, Rojo, and the Roblox Studio MCP.
 - **`roblox-scrum-correct-course`** — Adjust sprint scopes, manage blockers, or redirect mid-sprint.
 - **`roblox-scrum-retrospective`** — Close the sprint, audit stories, extract learnings, and close epics.
+- **`roblox-scrum-dev-cycle`** — Run a complete end-to-end SCRUM development cycle (Planning ➔ Story Creation ➔ TDD Dev ➔ Code Review) autonomously.
 
 ### Workflow backbone (use in order)
 - **`roblox-brief`** — Clarify creator intent (genre, audience, scale, multiplayer, monetization) before any planning.

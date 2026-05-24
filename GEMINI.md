@@ -56,5 +56,6 @@ The SSOT now has **full Phase-2 parity** — generic workflow / quality discipli
 | **TDD Story Dev in Roblox Studio** | `roblox-scrum-dev-story` |
 | **Sprint Course Correction** | `roblox-scrum-correct-course` |
 | **Sprint Retrospective** | `roblox-scrum-retrospective` |
+| **Complete End-to-End Dev Cycle** | `roblox-scrum-dev-cycle` |
 
 Skill content is identical across platforms — only the tool invocations differ (see the tool-mapping table above).

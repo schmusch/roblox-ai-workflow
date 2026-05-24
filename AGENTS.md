@@ -60,5 +60,6 @@ Generic-but-portable workflow / quality skills are now available as `roblox-*` s
 | **TDD Story Dev in Roblox Studio** | `roblox-scrum-dev-story` |
 | **Sprint Course Correction** | `roblox-scrum-correct-course` |
 | **Sprint Retrospective** | `roblox-scrum-retrospective` |
+| **Complete End-to-End Dev Cycle** | `roblox-scrum-dev-cycle` |
 
 All skill content is platform-neutral; read the SKILL.md and follow the instructions directly.
