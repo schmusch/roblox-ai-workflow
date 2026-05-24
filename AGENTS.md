@@ -54,10 +54,12 @@ Generic-but-portable workflow / quality skills are now available as `roblox-*` s
 | Runtime verification before completion | `roblox-ultraqa` |
 | Cross-LLM consultation | `roblox-ask-other-model` |
 | PRD scaffold for a new feature | `roblox-forge-init` |
+| **Roblox Epic & Story Scaffolding (BMAD)** | `roblox-scrum-create-epics` |
 | **Agile SCRUM Planning (BMAD)** | `roblox-scrum-planning` |
 | **Roblox Context-Rich Story Spec** | `roblox-scrum-create-story` |
 | **TDD Story Dev in Roblox Studio** | `roblox-scrum-dev-story` |
 | **Sprint Course Correction** | `roblox-scrum-correct-course` |
 | **Sprint Retrospective** | `roblox-scrum-retrospective` |
+| **Complete End-to-End Dev Cycle** | `roblox-scrum-dev-cycle` |
 
 All skill content is platform-neutral; read the SKILL.md and follow the instructions directly.
