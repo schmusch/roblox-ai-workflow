@@ -25,8 +25,8 @@ roblox-forge-init        →  roblox-deep-interview / roblox-brief
 For large, multi-epic projects managing long-term game development (the **BMAD SCRUM Workflow**):
 
 ```
-roblox-scrum-planning ➔ roblox-scrum-create-story ➔ roblox-scrum-dev-story ➔ roblox-code-review ➔ roblox-scrum-retrospective
-   (scrum board)           (rich story spec)         (TDD execution)         (quality gate)          (close epic)
+roblox-scrum-create-epics ➔ roblox-scrum-planning ➔ roblox-scrum-create-story ➔ roblox-scrum-dev-story ➔ roblox-code-review ➔ roblox-scrum-retrospective
+   (epic backlog)              (scrum board)           (rich story spec)         (TDD execution)         (quality gate)          (close epic)
 ```
 
 Skip phases only when the user's input already satisfies them (e.g., a precise file-level fix can go straight to `roblox-forge`).
@@ -40,6 +40,7 @@ When a user request maps to one of these skills, **invoke it before responding**
 ## The Roblox skill catalog
 
 ### Agile SCRUM Workflow (BMAD Method)
+- **`roblox-scrum-create-epics`** — Transform GDD and Architecture specifications into detailed Epics and User Stories with BDD acceptance criteria.
 - **`roblox-scrum-planning`** — Parse Roblox epics and compile the `sprint-status.yaml` board.
 - **`roblox-scrum-create-story`** — Select the next backlog story, analyze GDD/architecture, previous stories, and generate a rich developer guide story spec.
 - **`roblox-scrum-dev-story`** — Implement a story spec using TDD, StyLua, Rojo, and the Roblox Studio MCP.

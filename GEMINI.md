@@ -50,6 +50,7 @@ The SSOT now has **full Phase-2 parity** — generic workflow / quality discipli
 | Runtime verification before completion | `roblox-ultraqa` |
 | Cross-LLM consultation | `roblox-ask-other-model` |
 | PRD scaffold for a new feature | `roblox-forge-init` |
+| **Roblox Epic & Story Scaffolding (BMAD)** | `roblox-scrum-create-epics` |
 | **Agile SCRUM Planning (BMAD)** | `roblox-scrum-planning` |
 | **Roblox Context-Rich Story Spec** | `roblox-scrum-create-story` |
 | **TDD Story Dev in Roblox Studio** | `roblox-scrum-dev-story` |
