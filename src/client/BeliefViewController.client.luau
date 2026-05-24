@@ -193,4 +193,85 @@ else
 	updateRate(0)
 end
 
+-- ==========================================
+-- DEV-MODE: Animationstester (Zwei edle Buttons)
+-- ==========================================
+local IS_DEV_MODE = true
+
+if IS_DEV_MODE then
+	local devContainer = Instance.new("Frame")
+	devContainer.Name = "DevContainer"
+	devContainer.Size = UDim2.new(0, 220, 0, 35)
+	devContainer.Position = UDim2.new(1, -20, 0, 95)
+	devContainer.AnchorPoint = Vector2.new(1, 0)
+	devContainer.BackgroundTransparency = 1
+	devContainer.Parent = screenGui
+
+	-- Hilfsfunktion zur Button-Erstellung
+	local function createDevButton(name: string, text: string, posX: number, textColor: Color3, callback: () -> ())
+		local btn = Instance.new("TextButton")
+		btn.Name = name
+		btn.Size = UDim2.new(0, 100, 0, 30)
+		btn.Position = UDim2.new(0, posX, 0, 0)
+		btn.BackgroundColor3 = Color3.fromRGB(20, 22, 28)
+		btn.BackgroundTransparency = 0.25
+		btn.BorderSizePixel = 0
+		btn.Text = text
+		btn.TextSize = 13
+		btn.Font = Enum.Font.BuilderSansMedium
+		btn.TextColor3 = textColor
+		btn.Parent = devContainer
+
+		local btnCorner = Instance.new("UICorner")
+		btnCorner.CornerRadius = UDim.new(0, 8)
+		btnCorner.Parent = btn
+
+		local btnStroke = Instance.new("UIStroke")
+		btnStroke.Color = Color3.fromRGB(50, 53, 65)
+		btnStroke.Thickness = 1
+		btnStroke.Parent = btn
+
+		-- Hover-Effekt
+		btn.MouseEnter:Connect(function()
+			TweenService:Create(btn, TweenInfo.new(0.2), {
+				BackgroundTransparency = 0.1,
+				TextColor3 = Color3.fromRGB(255, 255, 255)
+			}):Play()
+			TweenService:Create(btnStroke, TweenInfo.new(0.2), {
+				Color = Color3.fromRGB(100, 100, 120)
+			}):Play()
+		end)
+
+		btn.MouseLeave:Connect(function()
+			TweenService:Create(btn, TweenInfo.new(0.2), {
+				BackgroundTransparency = 0.25,
+				TextColor3 = textColor
+			}):Play()
+			TweenService:Create(btnStroke, TweenInfo.new(0.2), {
+				Color = Color3.fromRGB(50, 53, 65)
+			}):Play()
+		end)
+
+		btn.MouseButton1Click:Connect(callback)
+	end
+
+	-- Button 1: Zuwachs-Puls simulieren (+100 Belief)
+	createDevButton("AddBeliefBtn", "+100 ✨", 0, Color3.fromRGB(100, 255, 100), function()
+		local current = player:GetAttribute("CitadelBelief") or 2000
+		player:SetAttribute("CitadelBelief", current + 100)
+	end)
+
+	-- Button 2: Abbuchungs-Zucken simulieren (-500 Belief)
+	createDevButton("SubBeliefBtn", "-500 🪙", 120, Color3.fromRGB(255, 100, 100), function()
+		local current = player:GetAttribute("CitadelBelief") or 2000
+		if current >= 500 then
+			player:SetAttribute("CitadelBelief", current - 500)
+		else
+			player:SetAttribute("CitadelBelief", 0)
+		end
+	end)
+	
+	print("[BeliefViewController] Dev-Buttons für Animationstest geladen.")
+end
+
 print("[BeliefViewController] Initialisiert und dynamisch geladen. Replikation aktiv.")
