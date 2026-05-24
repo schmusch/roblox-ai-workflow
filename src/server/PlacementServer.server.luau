@@ -6,6 +6,7 @@ local ServerScriptService = game:GetService("ServerScriptService")
 
 local PlacementModule = require(ServerScriptService.Server.modules.PlacementModule)
 local PlayerDataStore = require(ServerScriptService.Server.modules.PlayerDataStore)
+local GridModule = require(ServerScriptService.Server.modules.GridModule)
 local GridConfig = require(ReplicatedStorage:WaitForChild("Shared"):WaitForChild("GridConfig") :: ModuleScript)
 
 local Events = ReplicatedStorage:WaitForChild("Events") :: Folder
@@ -32,6 +33,9 @@ local function onPlayerAdded(player: Player)
 	state.Inventory["sun_temple"] = 2
 	state.Inventory["water_shrine"] = 4
 	
+	-- Gitter für den Spieler vorausinitialisieren (für den Wirtschaftskreislauf)
+	GridModule.GetOrCreateGrid(player)
+	
 	-- Native Attribute für Replikation an das Client-UI setzen
 	pcall(function()
 		player:SetAttribute("CitadelBelief", 2000)
@@ -39,7 +43,7 @@ local function onPlayerAdded(player: Player)
 		player:SetAttribute("CitadelInventory", HttpService:JSONEncode(state.Inventory))
 	end)
 	
-	print(string.format("[PlacementServer] Startguthaben für %s initialisiert: 2000 Belief, 5x old_forest, 2x sun_temple, 4x water_shrine.", player.Name))
+	print(string.format("[PlacementServer] Startguthaben für %s initialisiert: 2000 Belief, Gitter vorausinitialisiert.", player.Name))
 end
 
 Players.PlayerAdded:Connect(onPlayerAdded)
@@ -118,4 +122,12 @@ end
 
 createGridVisualization()
 
-print("[PlacementServer] Initialisiert. Lauscht auf PlacementRemote Events.")
+-- Live-Wirtschaftskreislauf (Passive Einkommens-Schleife mit netzwerkschonendem 1.0s Tick)
+task.spawn(function()
+	while true do
+		task.wait(1.0)
+		GridModule.Update(1.0)
+	end
+end)
+
+print("[PlacementServer] Initialisiert. Lauscht auf PlacementRemote Events. Wirtschaftsschleife aktiv.")

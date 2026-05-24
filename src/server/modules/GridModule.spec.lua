@@ -218,5 +218,18 @@ return function()
 			decoded = HttpService:JSONDecode(invAttr)
 			expect(decoded["old_forest_spirit"]).to.equal(9)
 		end)
+
+		it("sollte bei einer Generierungsrate von 0 den Glaubensstand unverändert lassen", function()
+			-- Gitter existiert, aber hat keine Objekte platziert
+			local grid = GridModule.GetOrCreateGrid(testPlayer)
+			local state = PlayerDataStore.getPlayerState(testPlayer)
+			expect(state.Belief).to.equal(1000)
+			
+			-- Simuliere Zeitschritt
+			GridModule.Update(1.0)
+			
+			-- Belief darf sich nicht verändert haben!
+			expect(state.Belief).to.equal(1000)
+		end)
 	end)
 end
