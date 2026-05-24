@@ -22,6 +22,13 @@ roblox-forge-init        →  roblox-deep-interview / roblox-brief
         (architecture)         (sequence)         (execute)
 ```
 
+For large, multi-epic projects managing long-term game development (the **BMAD SCRUM Workflow**):
+
+```
+roblox-scrum-planning ➔ roblox-scrum-create-story ➔ roblox-scrum-dev-story ➔ roblox-code-review ➔ roblox-scrum-retrospective
+   (scrum board)           (rich story spec)         (TDD execution)         (quality gate)          (close epic)
+```
+
 Skip phases only when the user's input already satisfies them (e.g., a precise file-level fix can go straight to `roblox-forge`).
 
 ## How to invoke skills
@@ -31,6 +38,13 @@ Use the `Skill` tool. Skills live in `skills/<name>/SKILL.md`. Available skills 
 When a user request maps to one of these skills, **invoke it before responding** (per `superpowers:using-superpowers`). Even a 1% match warrants invocation.
 
 ## The Roblox skill catalog
+
+### Agile SCRUM Workflow (BMAD Method)
+- **`roblox-scrum-planning`** — Parse Roblox epics and compile the `sprint-status.yaml` board.
+- **`roblox-scrum-create-story`** — Select the next backlog story, analyze GDD/architecture, previous stories, and generate a rich developer guide story spec.
+- **`roblox-scrum-dev-story`** — Implement a story spec using TDD, StyLua, Rojo, and the Roblox Studio MCP.
+- **`roblox-scrum-correct-course`** — Adjust sprint scopes, manage blockers, or redirect mid-sprint.
+- **`roblox-scrum-retrospective`** — Close the sprint, audit stories, extract learnings, and close epics.
 
 ### Workflow backbone (use in order)
 - **`roblox-brief`** — Clarify creator intent (genre, audience, scale, multiplayer, monetization) before any planning.

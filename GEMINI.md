@@ -50,5 +50,10 @@ The SSOT now has **full Phase-2 parity** — generic workflow / quality discipli
 | Runtime verification before completion | `roblox-ultraqa` |
 | Cross-LLM consultation | `roblox-ask-other-model` |
 | PRD scaffold for a new feature | `roblox-forge-init` |
+| **Agile SCRUM Planning (BMAD)** | `roblox-scrum-planning` |
+| **Roblox Context-Rich Story Spec** | `roblox-scrum-create-story` |
+| **TDD Story Dev in Roblox Studio** | `roblox-scrum-dev-story` |
+| **Sprint Course Correction** | `roblox-scrum-correct-course` |
+| **Sprint Retrospective** | `roblox-scrum-retrospective` |
 
 Skill content is identical across platforms — only the tool invocations differ (see the tool-mapping table above).
