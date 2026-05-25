@@ -10,24 +10,40 @@ local GridConfig = require(ReplicatedStorage:WaitForChild("Shared"):WaitForChild
 local GridMath = require(ReplicatedStorage.Shared:WaitForChild("GridMath") :: ModuleScript)
 
 local player = Players.LocalPlayer or Players.PlayerAdded:Wait()
-local camera = workspace.CurrentCamera
 
-local function setupCamera(char: Model)
+-- Premium, ereignisgesteuerter und repetitiver Camera Guardian
+local function secureCamera(char: Model)
 	local humanoid = char:WaitForChild("Humanoid", 10) :: Humanoid?
-	if humanoid then
-		local cam = workspace.CurrentCamera or workspace:WaitForChild("Camera")
-		if cam then
-			cam.CameraSubject = humanoid
-			cam.CameraType = Enum.CameraType.Custom
-			print("[PlacementController] Kamera erfolgreich an Humanoid gebunden (CameraType: Custom).")
+	if not humanoid then return end
+	
+	-- Führe die Absicherung über 3 Sekunden alle 100ms aus, um spätladende Roblox-Standard-Skripte zu überschreiben
+	task.spawn(function()
+		for i = 1, 30 do
+			local cam = workspace.CurrentCamera
+			if cam then
+				if cam.CameraType ~= Enum.CameraType.Custom then
+					cam.CameraType = Enum.CameraType.Custom
+				end
+				if cam.CameraSubject ~= humanoid then
+					cam.CameraSubject = humanoid
+				end
+			end
+			task.wait(0.1)
 		end
-	end
+	end)
 end
 
 if player.Character then
-	task.spawn(setupCamera, player.Character)
+	task.spawn(secureCamera, player.Character)
 end
-player.CharacterAdded:Connect(setupCamera)
+player.CharacterAdded:Connect(secureCamera)
+
+-- Guardian re-triggern, falls sich workspace.CurrentCamera zur Laufzeit ändert
+workspace:GetPropertyChangedSignal("CurrentCamera"):Connect(function()
+	if player.Character then
+		secureCamera(player.Character)
+	end
+end)
 
 local Events = ReplicatedStorage:WaitForChild("Events") :: Folder
 local placementRemote = Events:WaitForChild("PlacementRemote") :: RemoteEvent

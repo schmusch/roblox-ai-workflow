@@ -73,7 +73,7 @@ local function createGridVisualization()
 	local baseplate = Instance.new("Part")
 	baseplate.Name = "GridBaseplate"
 	baseplate.Size = Vector3.new(fullSizeX, 0.2, fullSizeZ)
-	baseplate.CFrame = CFrame.new(0, -0.1, 0)
+	baseplate.CFrame = CFrame.new(0, 0.1, 0)
 	baseplate.Material = Enum.Material.SmoothPlastic
 	baseplate.Color = Color3.fromRGB(20, 22, 28) -- Sehr edles Dunkelgrau
 	baseplate.Anchored = true
@@ -90,7 +90,7 @@ local function createGridVisualization()
 		local line = Instance.new("Part")
 		line.Name = "GridLine_X_" .. i
 		line.Size = Vector3.new(fullSizeX, 0.05, 0.1)
-		line.CFrame = CFrame.new(0, 0.01, zVal)
+		line.CFrame = CFrame.new(0, 0.21, zVal)
 		line.Material = Enum.Material.Neon
 		line.Color = lineColor
 		line.Transparency = lineTransparency
@@ -107,7 +107,7 @@ local function createGridVisualization()
 		local line = Instance.new("Part")
 		line.Name = "GridLine_Z_" .. i
 		line.Size = Vector3.new(0.1, 0.05, fullSizeZ)
-		line.CFrame = CFrame.new(xVal, 0.01, 0)
+		line.CFrame = CFrame.new(xVal, 0.21, 0)
 		line.Material = Enum.Material.Neon
 		line.Color = lineColor
 		line.Transparency = lineTransparency
