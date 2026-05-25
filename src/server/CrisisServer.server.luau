@@ -54,12 +54,14 @@ if not completeCleansingRemote then
 	completeCleansingRemote = remote
 end
 
-(startCleansingRemote :: RemoteEvent).OnServerEvent:Connect(function(player: Player, crisisId: any)
+local startCleansing = startCleansingRemote :: RemoteEvent
+startCleansing.OnServerEvent:Connect(function(player: Player, crisisId: any)
 	if typeof(crisisId) ~= "string" then return end
 	CrisisModule.HandleStartCleansing(player, crisisId)
 end)
 
-(completeCleansingRemote :: RemoteEvent).OnServerEvent:Connect(function(player: Player, crisisId: any)
+local completeCleansing = completeCleansingRemote :: RemoteEvent
+completeCleansing.OnServerEvent:Connect(function(player: Player, crisisId: any)
 	if typeof(crisisId) ~= "string" then return end
 	CrisisModule.HandleCompleteCleansing(player, crisisId)
 end)

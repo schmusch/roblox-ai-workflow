@@ -272,6 +272,16 @@ end)
 UserInputService.InputBegan:Connect(function(input, gameProcessed)
 	if gameProcessed then return end
 	
+	-- Platzierungsmodus mit Taste 'P' umschalten (aktivieren/deaktivieren)
+	if input.KeyCode == Enum.KeyCode.P then
+		if active then
+			deactivatePlacement()
+		else
+			activatePlacement("old_forest_spirit")
+		end
+		return
+	end
+	
 	-- Tastenbefehle im aktiven Platzierungsmodus
 	if active then
 		if input.KeyCode == Enum.KeyCode.R then
