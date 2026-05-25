@@ -11,11 +11,23 @@ local GridMath = require(ReplicatedStorage.Shared:WaitForChild("GridMath") :: Mo
 
 local player = Players.LocalPlayer or Players.PlayerAdded:Wait()
 local camera = workspace.CurrentCamera
-pcall(function()
-	if camera then
-		camera.CameraType = Enum.CameraType.Custom
+
+local function setupCamera(char: Model)
+	local humanoid = char:WaitForChild("Humanoid", 10) :: Humanoid?
+	if humanoid then
+		local cam = workspace.CurrentCamera or workspace:WaitForChild("Camera")
+		if cam then
+			cam.CameraSubject = humanoid
+			cam.CameraType = Enum.CameraType.Custom
+			print("[PlacementController] Kamera erfolgreich an Humanoid gebunden (CameraType: Custom).")
+		end
 	end
-end)
+end
+
+if player.Character then
+	task.spawn(setupCamera, player.Character)
+end
+player.CharacterAdded:Connect(setupCamera)
 
 local Events = ReplicatedStorage:WaitForChild("Events") :: Folder
 local placementRemote = Events:WaitForChild("PlacementRemote") :: RemoteEvent
