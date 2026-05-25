@@ -69,12 +69,13 @@ Execute the tasks and subtasks listed in the story spec in exact sequential orde
 2. If any blocker arises or external library dependencies are missing, pause work, log the status, and seek the creator's guidance. Do not halt mid-execution for minor milestones.
 
 ### Step 5: Finalize and Move to Review
-1. Once all acceptance criteria are checked and all tasks are `[x]`, run a complete verification:
+1. Once all acceptance criteria are checked and all tasks are `[x]`, run a **COMPLETE & EXHAUSTIVE VERIFICATION**:
    - Compile the game tree using Rojo and ensure no Wally lock violations.
-   - Run the full TestEZ test suite.
-   - Check `get_console_output` to ensure zero runtime exceptions.
+   - **Exhaustive Testing**: Run the full TestEZ / Jest-Roblox test suite. Assert that all unit, module, and replication tests are 100% green.
+   - **Manual/Console Audit**: Check the console output (`get_console_output`) during active Play Solo testing to ensure zero runtime warnings or exceptions exist.
+   - **Mandatory Visual Verification**: Trigger a screen capture in Roblox Studio using the `screen_capture` tool. Save this screenshot as visual evidence in the implementation folder (or display it to the user). Confirm that UI overlays, character visuals, or modifications align perfectly with GDD/UX specs.
 2. Update `{sprint_status}`: change `{story_key}` status to `review`.
 3. Inform the user in German of successful implementation, outputting:
    - File list of created/modified assets.
-   - Summary of tests run and verified evidence.
+   - Summary of tests run, console outputs audited, and the captured screenshot file path.
    - Instructions on running `roblox-code-review` to validate code replication and server security gates.

@@ -57,13 +57,18 @@ artifact-type: skill
    - **REFACTOR**: Format code with StyLua, resolve Selene lints, and ensure all tests remain green.
 3. Check off tasks `[x]` in the story spec file and populate the *Dev Agent Record* (model used, touched files, debug log).
 
-### Phase 4: Quality Code Review
-1. Act as the Senior Roblox Reviewer. Analyze the cumulative git diff or touchpoints of the implemented story.
+### Phase 4: Quality Code Review & Pre-Commit Verification (Exhaustive Testing & Visual Proof)
+1. Act as the Senior Roblox Reviewer and QA Auditor. Analyze the cumulative git diff or touchpoints of the implemented story.
 2. Run the `roblox-code-review` gates:
    - **Network Audit**: Are RemoteEvents rate-limited and proximity-checked?
    - **Replication Audit**: Are local changes decoupled from server authoritative states?
    - **Convention Audit**: Are names PascalCase and compliant with `references/roblox-vocabulary.md`?
-3. If gaps are found, return to Phase 3 to fix them. If all reviews pass:
+3. **MANDATORY PRE-COMMIT TEST GATE**:
+   - **Exhaustive Testing**: Run the complete automated test suite (TestEZ / Jest-Roblox) and verify that 100% of assertions pass. If any test fails, return to Phase 3.
+   - **Manual/Play Solo Test Run**: Trigger play-testing in Roblox Studio. Query the active console output (`get_console_output`) to ensure there are zero warnings, errors, or unhandled exceptions.
+   - **Mandatory Visual Verification**: Trigger a screen capture in Roblox Studio using the `screen_capture` tool. Save this screenshot as visual evidence in the implementation folder (or display it to the user). Confirm that UI overlays, character visuals, or modifications align perfectly with GDD/UX specs.
+   - **Replication Probe**: If remotes or persistence layers were added, run runtime checks (e.g. `execute_luau` server-side) to ensure data is persisting and replicating.
+4. If gaps or failures are found during these audits, return to Phase 3 to resolve them immediately. If all tests, lints, and visual evidence pass:
    - Update `{story_key}` status to `done` in `sprint-status.yaml`.
    - If all stories in the Epic are now `done`, update the Epic status to `done`.
 
