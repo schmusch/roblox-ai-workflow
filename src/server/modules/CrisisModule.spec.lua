@@ -5,17 +5,28 @@ return function()
 
 	describe("CrisisModule - Asynchronous Catastrophe Spawner Logic", function()
 		local mockPlayer: Player
+		local MockPlayer = {}
+		MockPlayer.__index = MockPlayer
+
+		function MockPlayer:GetAttribute(name: string)
+			return self._attributes[name]
+		end
+
+		function MockPlayer:SetAttribute(name: string, val: any)
+			self._attributes[name] = val
+		end
 
 		beforeEach(function()
-			-- Erstelle ein Mock-Player-Objekt
-			mockPlayer = {
+			-- Erstelle ein Mock-Player-Objekt mit voller Attribut-Unterstützung
+			mockPlayer = setmetatable({
 				Name = "TestPlayer",
 				UserId = 12345,
 				ClassName = "Player",
+				_attributes = {},
 				IsA = function(self, className)
 					return className == "Player"
 				end,
-			} :: any
+			}, MockPlayer) :: any
 
 			-- Stelle sicher, dass für jeden Test der Zustand sauber zurückgesetzt ist
 			CrisisModule.ClearAll()

@@ -231,5 +231,103 @@ return function()
 			-- Belief darf sich nicht verändert haben!
 			expect(state.Belief).to.equal(1000)
 		end)
+
+		describe("Katastrophen-Dämpfung und Platzierungs-Blockierung (Epic 2.2)", function()
+			local CrisisModule = require(script.Parent.CrisisModule)
+
+			beforeEach(function()
+				CrisisModule.ClearAll()
+			end)
+
+			afterEach(function()
+				CrisisModule.ClearAll()
+			end)
+
+			it("sollte Platzierungen auf Zellen blockieren, die durch eine aktive Katastrophe belegt sind", function()
+				-- Spawne eine Katastrophe. Da mockPlayer/testPlayer hier als testPlayer übergeben wird,
+				-- stellen wir sicher, dass sie darauf registriert wird.
+				-- Die Krise belegt 3x3 Zellen ab einer zufälligen Position. Wir können das Spawnen erzwingen.
+				local crisisId = CrisisModule.SpawnCrisis(testPlayer)
+				local active = CrisisModule.GetActiveCrises()[crisisId]
+				expect(active).to.be.ok()
+
+				-- Die Zellen der Krise sind: active.CellX bis active.CellX + 2, und active.CellZ bis active.CellZ + 2
+				-- Versuche ein Monument direkt auf den Startkoordinaten der Katastrophe zu platzieren
+				-- Da old_forest_spirit ein 2x2 Monument ist, überschneidet es sich garantiert mit dem 3x3 Bereich
+				local success = GridModule.PlaceObject(testPlayer, "old_forest_spirit", active.CellX, active.CellZ, 0)
+				expect(success).to.equal(false) -- MUSS blockiert werden!
+			end)
+
+			it("sollte die passive Glaubensgenerierung von Monumenten um 50% dämpfen, wenn sie eine Katastrophe überschneiden", function()
+				-- 1. Platziere zuerst ein Monument auf (3,3). Belegt (3,3) bis (4,4)
+				local success = GridModule.PlaceObject(testPlayer, "old_forest_spirit", 3, 3, 0)
+				expect(success).to.equal(true)
+
+				-- Replikationsrate vor der Dämpfung prüfen (10 Belief/s)
+				expect(testPlayer:GetAttribute("CitadelBeliefRate")).to.equal(10)
+
+				-- 2. Spawne eine Katastrophe direkt überlappend.
+				-- Wir mocken eine Krise auf Zelle (3,3) bis (5,5) für testPlayer.
+				-- Um stochastischen Werten zu entkommen, können wir die Krise manuell in CrisisModule manipulieren oder einen Spawner anstoßen
+				-- Wir spawnen eine Krise und setzen ihre Koordinaten auf (3,3), sodass sie (3,3) bis (5,5) belegt und das Monument (3,3 - 4,4) schneidet
+				local crisisId = CrisisModule.SpawnCrisis(testPlayer)
+				local active = CrisisModule.GetActiveCrises()[crisisId]
+				active.CellX = 3
+				active.CellZ = 3
+
+				-- Gitterzellen manuell belegen, wie es das CrisisModule tun würde
+				local grid = GridModule.GetOrCreateGrid(testPlayer)
+				for x = 3, 5 do
+					for z = 3, 5 do
+						grid.Cells[x][z] = "crisis_" .. crisisId
+					end
+				end
+
+				-- 3. Überprüfe die Rate nach der Platzierung der Katastrophe. Sie muss um 50 % gedämpft sein (10 * 0.5 = 5)!
+				-- Da PlaceObject die Attribute berechnet, rufen wir eine Neuberechnung auf, oder prüfen den Stand
+				-- Wir triggern die periodische Update-Schleife mit 1 Sekunde
+				local state = PlayerDataStore.getPlayerState(testPlayer)
+				state.Belief = 500 -- Reset Belief nach Platzierungskosten
+
+				GridModule.Update(1.0)
+				expect(state.Belief).to.equal(505) -- Nur +5 statt +10 generiert!
+			end)
+
+			it("sollte die Dämpfung bei mehreren Katastrophen auf maximal 50% begrenzen (nicht kumulativ)", function()
+				local success = GridModule.PlaceObject(testPlayer, "old_forest_spirit", 3, 3, 0)
+				expect(success).to.equal(true)
+
+				-- Spawne ZWEI Krisen, beide überschneiden das Monument auf (3,3)
+				local grid = GridModule.GetOrCreateGrid(testPlayer)
+				local id1 = CrisisModule.SpawnCrisis(testPlayer)
+				local active1 = CrisisModule.GetActiveCrises()[id1]
+				active1.CellX = 3
+				active1.CellZ = 3
+				for x = 3, 5 do
+					for z = 3, 5 do
+						grid.Cells[x][z] = "crisis_" .. id1
+					end
+				end
+
+				local id2 = CrisisModule.SpawnCrisis(testPlayer)
+				local active2 = CrisisModule.GetActiveCrises()[id2]
+				active2.CellX = 4
+				active2.CellZ = 4
+				for x = 4, 6 do
+					for z = 4, 6 do
+						if not grid.Cells[x][z] then
+							grid.Cells[x][z] = "crisis_" .. id2
+						end
+					end
+				end
+
+				-- Simuliere Update-Tick. Dämpfung darf maximal 50 % betragen (Rate = 5 statt 2.5 oder 0!)
+				local state = PlayerDataStore.getPlayerState(testPlayer)
+				state.Belief = 500
+
+				GridModule.Update(1.0)
+				expect(state.Belief).to.equal(505)
+			end)
+		end)
 	end)
 end

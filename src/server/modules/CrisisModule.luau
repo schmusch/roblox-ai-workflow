@@ -88,6 +88,17 @@ function CrisisModule.SpawnCrisis(player: Player): string
 		end
 	end
 
+	-- Zellen im Spielergitter belegen, um neue Platzierungen zu blockieren
+	local GridModule = require(script.Parent.GridModule)
+	local grid = GridModule.GetOrCreateGrid(player)
+	for x = cellX, cellX + 2 do
+		for z = cellZ, cellZ + 2 do
+			if grid.Cells[x] and grid.Cells[x][z] == nil then
+				grid.Cells[x][z] = "crisis_" .. crisisId
+			end
+		end
+	end
+
 	activeCrises[crisisId] = crisis
 	print(string.format("[CrisisModule] Katastrophe %s auf Zelle (%d,%d) für Spieler %s gespawnt!", 
 		crisisId, cellX, cellZ, player.Name))
@@ -111,6 +122,18 @@ function CrisisModule.RemoveCrisis(crisisId: string)
 		if crisis.VisualPart then
 			crisis.VisualPart:Destroy()
 		end
+
+		-- Gitterzellen freigeben
+		local GridModule = require(script.Parent.GridModule)
+		local grid = GridModule.GetOrCreateGrid(crisis.Player)
+		for x = crisis.CellX, crisis.CellX + 2 do
+			for z = crisis.CellZ, crisis.CellZ + 2 do
+				if grid.Cells[x] and grid.Cells[x][z] == "crisis_" .. crisisId then
+					grid.Cells[x][z] = nil
+				end
+			end
+		end
+
 		activeCrises[crisisId] = nil
 		print(string.format("[CrisisModule] Katastrophe %s erfolgreich entfernt.", crisisId))
 	end
@@ -118,10 +141,23 @@ end
 
 -- Setzt alle aktiven Katastrophen zurück (für Unit-Tests)
 function CrisisModule.ClearAll()
+	local GridModule = require(script.Parent.GridModule)
 	for id, crisis in pairs(activeCrises) do
 		if crisis.VisualPart then
 			crisis.VisualPart:Destroy()
 		end
+
+		-- Gitterzellen auf dem Spielergitter freigeben
+		pcall(function()
+			local grid = GridModule.GetOrCreateGrid(crisis.Player)
+			for x = crisis.CellX, crisis.CellX + 2 do
+				for z = crisis.CellZ, crisis.CellZ + 2 do
+					if grid.Cells[x] and grid.Cells[x][z] == "crisis_" .. id then
+						grid.Cells[x][z] = nil
+					end
+				end
+			end
+		end)
 	end
 	activeCrises = {}
 end

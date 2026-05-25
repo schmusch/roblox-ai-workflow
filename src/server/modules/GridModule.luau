@@ -128,7 +128,11 @@ function GridModule.PlaceObject(player: Player, deityId: string, cellX: number, 
 	for _, obj in pairs(grid.Objects) do
 		local prof = GridConfig.DeityProfiles[obj.DeityId]
 		if prof then
-			totalBeliefPerSecond = totalBeliefPerSecond + prof.BeliefPerSecond
+			local beliefPerSecond = prof.BeliefPerSecond
+			if GridModule.IsObjectDamped(grid, obj) then
+				beliefPerSecond = beliefPerSecond * 0.5
+			end
+			totalBeliefPerSecond = totalBeliefPerSecond + beliefPerSecond
 		end
 	end
 	pcall(function()
@@ -174,13 +178,47 @@ function GridModule.PlaceObject(player: Player, deityId: string, cellX: number, 
 	return true
 end
 
+function GridModule.IsObjectDamped(grid: PlayerGrid, obj: PlacedObject): boolean
+	local CrisisModule = require(script.Parent.CrisisModule)
+	local activeCrises = CrisisModule.GetActiveCrises()
+	
+	local w = obj.Width
+	local l = obj.Length
+	if obj.Rotation == 90 or obj.Rotation == 270 then
+		w, l = l, w
+	end
+	
+	local xMin1, xMax1 = obj.OriginX, obj.OriginX + w - 1
+	local zMin1, zMax1 = obj.OriginZ, obj.OriginZ + l - 1
+
+	for _, crisis in pairs(activeCrises) do
+		if crisis.Player == grid.Player then
+			local xMin2, xMax2 = crisis.CellX, crisis.CellX + 2
+			local zMin2, zMax2 = crisis.CellZ, crisis.CellZ + 2
+			
+			local overlapX = math.max(xMin1, xMin2) <= math.min(xMax1, xMax2)
+			local overlapZ = math.max(zMin1, zMin2) <= math.min(zMax1, zMax2)
+			
+			if overlapX and overlapZ then
+				return true
+			end
+		end
+	end
+	
+	return false
+end
+
 function GridModule.Update(deltaTime: number)
 	for player, grid in pairs(grids) do
 		local totalBeliefPerSecond = 0
 		for _, obj in pairs(grid.Objects) do
 			local profile = GridConfig.DeityProfiles[obj.DeityId]
 			if profile then
-				totalBeliefPerSecond = totalBeliefPerSecond + profile.BeliefPerSecond
+				local beliefPerSecond = profile.BeliefPerSecond
+				if GridModule.IsObjectDamped(grid, obj) then
+					beliefPerSecond = beliefPerSecond * 0.5
+				end
+				totalBeliefPerSecond = totalBeliefPerSecond + beliefPerSecond
 			end
 		end
 
