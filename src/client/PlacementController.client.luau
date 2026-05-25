@@ -10,6 +10,7 @@ local GridConfig = require(ReplicatedStorage:WaitForChild("Shared"):WaitForChild
 local GridMath = require(ReplicatedStorage.Shared:WaitForChild("GridMath") :: ModuleScript)
 
 local player = Players.LocalPlayer or Players.PlayerAdded:Wait()
+local camera = workspace.CurrentCamera
 
 -- Premium, ereignisgesteuerter und repetitiver Camera Guardian
 local function secureCamera(char: Model)
@@ -21,6 +22,7 @@ local function secureCamera(char: Model)
 		for i = 1, 30 do
 			local cam = workspace.CurrentCamera
 			if cam then
+				camera = cam -- Dynamische Aktualisierung der globalen Referenz
 				if cam.CameraType ~= Enum.CameraType.Custom then
 					cam.CameraType = Enum.CameraType.Custom
 				end
