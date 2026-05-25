@@ -262,4 +262,5 @@ function CrisisModule.HandleCompleteCleansing(player: Player, crisisId: string):
 	return true
 end
 
+_G.CrisisModule = CrisisModule
 return CrisisModule
