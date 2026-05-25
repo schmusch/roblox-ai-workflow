@@ -4,6 +4,7 @@
 local HttpService = game:GetService("HttpService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local PlayerDataStore = require(script.Parent.PlayerDataStore)
+local GridCollisionModule = require(script.Parent.GridCollisionModule)
 local GridConfig = require(ReplicatedStorage.Shared.GridConfig)
 local GridMath = require(ReplicatedStorage.Shared.GridMath)
 
@@ -64,7 +65,12 @@ function GridModule.WorldToCellCoords(worldPos: Vector3): (number, number)
 end
 
 function GridModule.CheckPlacementValidity(grid: PlayerGrid, deityId: string, cellX: number, cellZ: number, rotation: number): (boolean, { {number} }?)
-	return GridMath.CheckPlacementValidity(grid.Cells, deityId, cellX, cellZ, rotation)
+	local profile = GridConfig.DeityProfiles[deityId]
+	if not profile then
+		return false, nil
+	end
+	local footprint = Vector3.new(profile.Width, 2, profile.Length)
+	return GridCollisionModule.verifyPlacement(grid.Cells, footprint, cellX, cellZ, rotation)
 end
 
 function GridModule.PlaceObject(player: Player, deityId: string, cellX: number, cellZ: number, rotation: number): boolean
