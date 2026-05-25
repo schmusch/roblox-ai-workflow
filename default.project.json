@@ -17,6 +17,9 @@
         },
         "PlacementRemote": {
           "$className": "RemoteEvent"
+        },
+        "CatastropheRemote": {
+          "$className": "RemoteEvent"
         }
       }
     },

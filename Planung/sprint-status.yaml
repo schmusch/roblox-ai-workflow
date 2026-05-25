@@ -34,8 +34,8 @@ development_status:
   1-6-server-authoritative-voxel-kollision-boundary-verification: done
   epic-1-retrospective: done
 
-  epic-2: backlog
-  2-1-asynchronous-catastrophe-spawner: backlog
+  epic-2: in-progress
+  2-1-asynchronous-catastrophe-spawner: done
   2-2-cellular-damping-zones: backlog
   2-3-server-verified-proximity-cleansing: backlog
   2-4-anti-speedhack-session-verification-damped-offline-progression: backlog
