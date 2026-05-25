@@ -20,6 +20,12 @@
         },
         "CatastropheRemote": {
           "$className": "RemoteEvent"
+        },
+        "StartCleansing": {
+          "$className": "RemoteEvent"
+        },
+        "CompleteCleansing": {
+          "$className": "RemoteEvent"
         }
       }
     },

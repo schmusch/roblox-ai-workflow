@@ -134,6 +134,22 @@ function CrisisModule.RemoveCrisis(crisisId: string)
 			end
 		end
 
+		-- Belief-Rate neu berechnen und replizieren (da die Dämpfung weggefallen ist!)
+		local totalBeliefPerSecond = 0
+		for _, obj in pairs(grid.Objects) do
+			local prof = GridConfig.DeityProfiles[obj.DeityId]
+			if prof then
+				local beliefPerSecond = prof.BeliefPerSecond
+				if GridModule.IsObjectDamped(grid, obj) then
+					beliefPerSecond = beliefPerSecond * 0.5
+				end
+				totalBeliefPerSecond = totalBeliefPerSecond + beliefPerSecond
+			end
+		end
+		pcall(function()
+			(crisis.Player :: any):SetAttribute("CitadelBeliefRate", totalBeliefPerSecond)
+		end)
+
 		activeCrises[crisisId] = nil
 		print(string.format("[CrisisModule] Katastrophe %s erfolgreich entfernt.", crisisId))
 	end
@@ -160,6 +176,90 @@ function CrisisModule.ClearAll()
 		end)
 	end
 	activeCrises = {}
+end
+
+local function getCrisisWorldPos(cellX: number, cellZ: number): Vector3
+	local sizeX = GridConfig.Settings.SizeX
+	local sizeZ = GridConfig.Settings.SizeZ
+	local cellSize = GridConfig.Settings.CellSize
+	local centerX = cellX + 1
+	local centerZ = cellZ + 1
+	local worldX = (centerX - 1 - sizeX / 2) * cellSize + cellSize / 2
+	local worldZ = (centerZ - 1 - sizeZ / 2) * cellSize + cellSize / 2
+	return Vector3.new(worldX, 0.25, worldZ)
+end
+
+local activeCleansings: { [Player]: { CrisisId: string, StartTime: number } } = {}
+
+-- Setzt alle aktiven Reinigungen zurück (für Tests)
+function CrisisModule.ResetCleansings()
+	activeCleansings = {}
+end
+
+function CrisisModule.HandleStartCleansing(player: Player, crisisId: string): boolean
+	local crisis = activeCrises[crisisId]
+	if not crisis then
+		return false
+	end
+
+	-- Reichweitenprüfung (Proximity Check <= 15 Studs)
+	local crisisPos = getCrisisWorldPos(crisis.CellX, crisis.CellZ)
+	local character = player.Character
+	local rootPart = character and character:FindFirstChild("HumanoidRootPart") :: BasePart?
+	local playerPos = rootPart and rootPart.Position or Vector3.new(0, 0, 0)
+	
+	local distance = (playerPos - crisisPos).Magnitude
+	if distance > 15 then
+		warn(string.format("[SECURITY] Cleansing-Reichweitenprüfung fehlgeschlagen für %s (Distanz: %.2f Studs)", player.Name, distance))
+		return false
+	end
+
+	-- Startzeit registrieren
+	activeCleansings[player] = {
+		CrisisId = crisisId,
+		StartTime = os.clock(),
+	}
+	print(string.format("[CrisisModule] Reinigung gestartet für Spieler %s an Katastrophe %s.", player.Name, crisisId))
+	return true
+end
+
+function CrisisModule.HandleCompleteCleansing(player: Player, crisisId: string): boolean
+	local cleansing = activeCleansings[player]
+	if not (cleansing and cleansing.CrisisId == crisisId) then
+		return false
+	end
+
+	local crisis = activeCrises[crisisId]
+	if not crisis then
+		activeCleansings[player] = nil
+		return false
+	end
+
+	-- 1. Kanonisches Zeitintervall prüfen (Kanalisierungsdauer >= 3.0 Sekunden)
+	local elapsed = os.clock() - cleansing.StartTime
+	if elapsed < 3.0 then
+		warn(string.format("[SECURITY] Cleansing-Kanalisierungsprüfung fehlgeschlagen für %s (Kanalisiert: %.2fs)", player.Name, elapsed))
+		activeCleansings[player] = nil
+		return false
+	end
+
+	-- 2. Reichweitenprüfung am Ende (Anti-Teleport)
+	local crisisPos = getCrisisWorldPos(crisis.CellX, crisis.CellZ)
+	local character = player.Character
+	local rootPart = character and character:FindFirstChild("HumanoidRootPart") :: BasePart?
+	local playerPos = rootPart and rootPart.Position or Vector3.new(0, 0, 0)
+	
+	local distance = (playerPos - crisisPos).Magnitude
+	if distance > 15 then
+		warn(string.format("[SECURITY] Cleansing-Verifikations-Reichweitenprüfung fehlgeschlagen für %s (Distanz: %.2f Studs)", player.Name, distance))
+		activeCleansings[player] = nil
+		return false
+	end
+
+	-- Erfolgreicher Abschluss: Krise löschen und Register bereinigen
+	activeCleansings[player] = nil
+	CrisisModule.RemoveCrisis(crisisId)
+	return true
 end
 
 return CrisisModule

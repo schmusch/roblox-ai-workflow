@@ -16,13 +16,29 @@ return function()
 			self._attributes[name] = val
 		end
 
+		local mockRootPart: { Position: Vector3 }
+		local mockCharacter: { FindFirstChild: (self: any, name: string) -> any }
+
 		beforeEach(function()
-			-- Erstelle ein Mock-Player-Objekt mit voller Attribut-Unterstützung
+			mockRootPart = {
+				Position = Vector3.new(0, 0, 0)
+			}
+			mockCharacter = {
+				FindFirstChild = function(self, name)
+					if name == "HumanoidRootPart" then
+						return mockRootPart
+					end
+					return nil
+				end
+			}
+
+			-- Erstelle ein Mock-Player-Objekt mit voller Attribut- und Positions-Unterstützung
 			mockPlayer = setmetatable({
 				Name = "TestPlayer",
 				UserId = 12345,
 				ClassName = "Player",
 				_attributes = {},
+				Character = mockCharacter,
 				IsA = function(self, className)
 					return className == "Player"
 				end,
@@ -30,6 +46,7 @@ return function()
 
 			-- Stelle sicher, dass für jeden Test der Zustand sauber zurückgesetzt ist
 			CrisisModule.ClearAll()
+			CrisisModule.ResetCleansings()
 		end)
 
 		it("sollte eine Krise erfolgreich spawnen und registrieren", function()
@@ -94,6 +111,84 @@ return function()
 				countAfter += 1
 			end
 			expect(countAfter).to.equal(0)
+		end)
+
+		describe("Anti-Exploit Proximity Cleansing (Epic 2.3)", function()
+			local ReplicatedStorage = game:GetService("ReplicatedStorage")
+			local GridConfig = require(ReplicatedStorage.Shared.GridConfig)
+
+			local function getCrisisWorldPos(cellX: number, cellZ: number): Vector3
+				local sizeX = GridConfig.Settings.SizeX
+				local sizeZ = GridConfig.Settings.SizeZ
+				local cellSize = GridConfig.Settings.CellSize
+				local centerX = cellX + 1
+				local centerZ = cellZ + 1
+				local worldX = (centerX - 1 - sizeX / 2) * cellSize + cellSize / 2
+				local worldZ = (centerZ - 1 - sizeZ / 2) * cellSize + cellSize / 2
+				return Vector3.new(worldX, 0.25, worldZ)
+			end
+
+			it("sollte den legitimen Reinigungsprozess (Start -> 3s Warten -> Complete) erfolgreich durchführen", function()
+				local crisisId = CrisisModule.SpawnCrisis(mockPlayer)
+				local crisis = CrisisModule.GetActiveCrises()[crisisId]
+				expect(crisis).to.be.ok()
+
+				-- 1. Positioniere Spieler direkt auf der Krise
+				local crisisPos = getCrisisWorldPos(crisis.CellX, crisis.CellZ)
+				mockRootPart.Position = crisisPos
+
+				-- 2. Starte Reinigung auf dem Server
+				local startSuccess = CrisisModule.HandleStartCleansing(mockPlayer, crisisId)
+				expect(startSuccess).to.equal(true)
+
+				-- 3. Simuliere 3.1 Sekunden Wartezeit (Mock-Zeitsteuerungen oder Yields)
+				-- In Unit-Tests können wir den Zeitstempel im in-memory Speicher manipulieren
+				-- Dazu mocken wir os.clock() oder verändern direkt das interne Cleansing-Register, wenn nötig.
+				-- Aber wir können auch einfach task.wait(3.1) in Echtzeit laufen lassen, da es sehr kurz ist!
+				task.wait(3.1)
+
+				-- 4. Schließe Reinigung erfolgreich ab
+				local completeSuccess = CrisisModule.HandleCompleteCleansing(mockPlayer, crisisId)
+				expect(completeSuccess).to.equal(true)
+
+				-- Die Krise muss gelöscht sein!
+				local activeAfter = CrisisModule.GetActiveCrises()
+				expect(activeAfter[crisisId]).to.never.be.ok()
+			end)
+
+			it("sollte Sofort-Reinigungs-Versuche (Instant-Cleansing Exploit) unter 3 Sekunden abfangen und ablehnen", function()
+				local crisisId = CrisisModule.SpawnCrisis(mockPlayer)
+				local crisis = CrisisModule.GetActiveCrises()[crisisId]
+				expect(crisis).to.be.ok()
+
+				local crisisPos = getCrisisWorldPos(crisis.CellX, crisis.CellZ)
+				mockRootPart.Position = crisisPos
+
+				local startSuccess = CrisisModule.HandleStartCleansing(mockPlayer, crisisId)
+				expect(startSuccess).to.equal(true)
+
+				-- Sofortiges Abschließen ohne Wartezeit (0 Sekunden)
+				local completeSuccess = CrisisModule.HandleCompleteCleansing(mockPlayer, crisisId)
+				expect(completeSuccess).to.equal(false) -- MUSS abgelehnt werden!
+
+				-- Die Krise darf nicht gelöscht sein!
+				local activeAfter = CrisisModule.GetActiveCrises()
+				expect(activeAfter[crisisId]).to.be.ok()
+			end)
+
+			it("sollte Reinigungs-Versuche außerhalb der Reichweite (Teleport-Cleansing Exploit > 15 Studs) ablehnen", function()
+				local crisisId = CrisisModule.SpawnCrisis(mockPlayer)
+				local crisis = CrisisModule.GetActiveCrises()[crisisId]
+				expect(crisis).to.be.ok()
+
+				-- Spieler ist 20 Studs entfernt platziert
+				local crisisPos = getCrisisWorldPos(crisis.CellX, crisis.CellZ)
+				mockRootPart.Position = crisisPos + Vector3.new(20, 0, 0)
+
+				-- Start-Reinigung muss bereits wegen Reichweite abgelehnt werden
+				local startSuccess = CrisisModule.HandleStartCleansing(mockPlayer, crisisId)
+				expect(startSuccess).to.equal(false) -- MUSS abgelehnt werden!
+			end)
 		end)
 	end)
 end

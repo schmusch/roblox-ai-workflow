@@ -34,4 +34,34 @@ task.spawn(function()
 	end
 end)
 
-print("[CrisisServer] Asynchroner Katastrophen-Spanner erfolgreich gestartet.")
+-- RemoteEvents initialisieren und verknüpfen
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Events = ReplicatedStorage:WaitForChild("Events") :: Folder
+
+local startCleansingRemote = Events:FindFirstChild("StartCleansing")
+if not startCleansingRemote then
+	local remote = Instance.new("RemoteEvent")
+	remote.Name = "StartCleansing"
+	remote.Parent = Events
+	startCleansingRemote = remote
+end
+
+local completeCleansingRemote = Events:FindFirstChild("CompleteCleansing")
+if not completeCleansingRemote then
+	local remote = Instance.new("RemoteEvent")
+	remote.Name = "CompleteCleansing"
+	remote.Parent = Events
+	completeCleansingRemote = remote
+end
+
+(startCleansingRemote :: RemoteEvent).OnServerEvent:Connect(function(player: Player, crisisId: any)
+	if typeof(crisisId) ~= "string" then return end
+	CrisisModule.HandleStartCleansing(player, crisisId)
+end)
+
+(completeCleansingRemote :: RemoteEvent).OnServerEvent:Connect(function(player: Player, crisisId: any)
+	if typeof(crisisId) ~= "string" then return end
+	CrisisModule.HandleCompleteCleansing(player, crisisId)
+end)
+
+print("[CrisisServer] Asynchroner Katastrophen-Spanner & Cleansing-Listeners erfolgreich gestartet.")
