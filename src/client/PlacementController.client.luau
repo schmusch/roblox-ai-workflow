@@ -11,6 +11,11 @@ local GridMath = require(ReplicatedStorage.Shared:WaitForChild("GridMath") :: Mo
 
 local player = Players.LocalPlayer or Players.PlayerAdded:Wait()
 local camera = workspace.CurrentCamera
+pcall(function()
+	if camera then
+		camera.CameraType = Enum.CameraType.Custom
+	end
+end)
 
 local Events = ReplicatedStorage:WaitForChild("Events") :: Folder
 local placementRemote = Events:WaitForChild("PlacementRemote") :: RemoteEvent
