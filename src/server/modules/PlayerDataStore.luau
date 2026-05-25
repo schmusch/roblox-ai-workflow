@@ -2,9 +2,10 @@
 local HttpService = game:GetService("HttpService")
 local PlayerDataStore = {}
 
-type PlayerState = {
+export type PlayerState = {
 	Belief: number,
-	Inventory: { [string]: number }
+	Inventory: { [string]: number },
+	LastSaveTime: number?
 }
 
 local States: { [Player]: PlayerState } = {}
@@ -28,7 +29,8 @@ function PlayerDataStore.getPlayerState(player: Player): PlayerState
 		-- Fallback-Zustand, falls nicht initialisiert
 		state = {
 			Belief = 0,
-			Inventory = {}
+			Inventory = {},
+			LastSaveTime = os.time()
 		}
 		States[player] = state
 	end

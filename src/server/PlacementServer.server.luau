@@ -29,28 +29,72 @@ end)
 -- Startguthaben für beitretende Spieler einrichten (2000 Belief, Gottheiten im Inventar)
 local function onPlayerAdded(player: Player)
 	local state = PlayerDataStore.getPlayerState(player)
-	state.Belief = 2000
-	state.Inventory["old_forest_spirit"] = 5
-	state.Inventory["sun_temple"] = 2
-	state.Inventory["water_shrine"] = 4
+	
+	-- Nur beim ALLERERSTEN Beitritt initialisieren (wenn Belief noch auf Standard-Fallback 0 steht)
+	if state.Belief == 0 and not player:GetAttribute("CitadelBelief") then
+		state.Belief = 2000
+		state.Inventory["old_forest_spirit"] = 5
+		state.Inventory["sun_temple"] = 2
+		state.Inventory["water_shrine"] = 4
+	end
 	
 	-- Gitter für den Spieler vorausinitialisieren (für den Wirtschaftskreislauf)
-	GridModule.GetOrCreateGrid(player)
+	local grid = GridModule.GetOrCreateGrid(player)
+	
+	-- Glaubensrate auf Basis der geladenen Gitterobjekte berechnen (für Offline-Progression)
+	local totalBeliefRate = 0
+	for _, obj in pairs(grid.Objects) do
+		local prof = GridConfig.DeityProfiles[obj.DeityId]
+		if prof then
+			local beliefPerSecond = prof.BeliefPerSecond
+			if GridModule.IsObjectDamped(grid, obj) then
+				beliefPerSecond = beliefPerSecond * 0.5
+			end
+			totalBeliefRate = totalBeliefRate + beliefPerSecond
+		end
+	end
+	
+	-- Offline-Progression berechnen (Story 2.4)
+	local now = os.time()
+	local lastSave = state.LastSaveTime
+	if lastSave and lastSave > 0 and totalBeliefRate > 0 then
+		local SessionVerificationModule = require(ServerScriptService.Server.modules.SessionVerificationModule)
+		local offlineEarnings = SessionVerificationModule.CalculateOfflineEarnings(player, lastSave, now, totalBeliefRate)
+		if offlineEarnings > 0 then
+			state.Belief = state.Belief + offlineEarnings
+			print(string.format("[SessionVerification] Spieler %s erhält %d gedämpfte Offline-Belief-Einnahmen für %d Sekunden Abwesenheit.", 
+				player.Name, offlineEarnings, now - lastSave))
+		end
+	end
+	state.LastSaveTime = now
 	
 	-- Native Attribute für Replikation an das Client-UI setzen
 	pcall(function()
-		player:SetAttribute("CitadelBelief", 2000)
-		player:SetAttribute("CitadelBeliefRate", 0)
+		player:SetAttribute("CitadelBelief", state.Belief)
+		player:SetAttribute("CitadelBeliefRate", totalBeliefRate)
 		player:SetAttribute("CitadelInventory", HttpService:JSONEncode(state.Inventory))
 	end)
 	
-	print(string.format("[PlacementServer] Startguthaben für %s initialisiert: 2000 Belief, Gitter vorausinitialisiert.", player.Name))
+	print(string.format("[PlacementServer] Startguthaben für %s initialisiert: %d Belief, Gitter vorausinitialisiert.", player.Name, state.Belief))
 end
 
 Players.PlayerAdded:Connect(onPlayerAdded)
 for _, player in ipairs(Players:GetPlayers()) do
 	task.spawn(onPlayerAdded, player)
 end
+
+-- Heartbeat zur persistenten Sicherung des Aktivitäts-Zeitstempels (Schutz gegen Crash-Datenverlust)
+task.spawn(function()
+	while true do
+		task.wait(60.0)
+		for _, player in ipairs(Players:GetPlayers()) do
+			pcall(function()
+				local state = PlayerDataStore.getPlayerState(player)
+				state.LastSaveTime = os.time()
+			end)
+		end
+	end
+end)
 
 -- Visualisierung des Gitters in Workspace (10x10, zentriert auf 0,0,0)
 local function createGridVisualization()

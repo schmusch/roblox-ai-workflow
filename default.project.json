@@ -26,6 +26,9 @@
         },
         "CompleteCleansing": {
           "$className": "RemoteEvent"
+        },
+        "TriggerPrestige": {
+          "$className": "RemoteEvent"
         }
       }
     },

@@ -229,6 +229,36 @@ function GridModule.Update(deltaTime: number)
 	end
 end
 
+-- Leert das gesamte Spielfeld des Spielers geometrisch und physisch (für Prestige-Reset)
+function GridModule.ClearGrid(player: Player)
+	local grid = grids[player]
+	if grid then
+		-- 1. Physische Parts im Workspace zerstören
+		local placedFolder = workspace:FindFirstChild("PlacedObjects")
+		if placedFolder then
+			for objId, _ in pairs(grid.Objects) do
+				for _, child in ipairs(placedFolder:GetChildren()) do
+					if child:IsA("BasePart") and child.Name:find(objId, 1, true) then
+						child:Destroy()
+					end
+				end
+			end
+		end
+
+		-- 2. Speicher-Datenstrukturen leeren
+		grid.Objects = {}
+		for x = 1, GridConfig.Settings.SizeX do
+			grid.Cells[x] = {}
+		end
+
+		-- 3. Attribute für den Client zurücksetzen
+		player:SetAttribute("CitadelPlacedObjects", "{}")
+		pcall(function()
+			(player :: any):SetAttribute("CitadelBeliefRate", 0)
+		end)
+	end
+end
+
 -- Speicherbereinigung bei Spieleraustritt
 game:GetService("Players").PlayerRemoving:Connect(function(player)
 	grids[player] = nil
