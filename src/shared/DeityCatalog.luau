@@ -16,6 +16,10 @@ export type DeityConfig = {
 	BaseProduction: number, -- Glaubensgenerierung pro Sekunde
 	BaseRadius: number,     -- R_0 für orbitalen Halo
 	BaseOmega: number,      -- w_0 für Rotationsgeschwindigkeit
+	BaseHP: number,
+	BaseAttack: number,
+	BaseSpeed: number,
+	IsStabilized: boolean?,
 }
 
 -- Fallback-Profil für Unit-Tests oder unbekannte IDs (Zero-Allocation, statisch definiert)
@@ -30,6 +34,9 @@ local FALLBACK_PROFILE: DeityConfig = {
 	BaseProduction = 0,
 	BaseRadius = 10.0,
 	BaseOmega = 1.0,
+	BaseHP = 100,
+	BaseAttack = 10,
+	BaseSpeed = 5,
 }
 
 -- Standardkatalog von Gottheiten
@@ -45,6 +52,9 @@ local Profiles: { [number]: DeityConfig } = {
 		BaseProduction = 10,
 		BaseRadius = 10,
 		BaseOmega = 1.0,
+		BaseHP = 100,
+		BaseAttack = 10,
+		BaseSpeed = 8,
 	},
 	[102] = {
 		Id = "sun_temple",
@@ -57,6 +67,9 @@ local Profiles: { [number]: DeityConfig } = {
 		BaseProduction = 35,
 		BaseRadius = 15,
 		BaseOmega = 0.5,
+		BaseHP = 250,
+		BaseAttack = 25,
+		BaseSpeed = 4,
 	},
 	[103] = {
 		Id = "water_shrine",
@@ -69,6 +82,9 @@ local Profiles: { [number]: DeityConfig } = {
 		BaseProduction = 5,
 		BaseRadius = 8,
 		BaseOmega = 1.5,
+		BaseHP = 80,
+		BaseAttack = 15,
+		BaseSpeed = 12,
 	},
 	[104] = {
 		Id = "media_nexus",
@@ -81,6 +97,9 @@ local Profiles: { [number]: DeityConfig } = {
 		BaseProduction = 20,
 		BaseRadius = 12,
 		BaseOmega = 0.8,
+		BaseHP = 120,
+		BaseAttack = 18,
+		BaseSpeed = 9,
 	}
 }
 

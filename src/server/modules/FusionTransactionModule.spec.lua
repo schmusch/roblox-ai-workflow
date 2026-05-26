@@ -73,7 +73,7 @@ return function()
 			
 			local finalState = PlayerDataStore.getPlayerState(mockPlayer)
 			expect(finalState.Belief).to.equal(400)
-			expect(finalState.Inventory["hybrid_old_forest_spirit_old_forest_spirit"]).to.equal(1)
+			expect(finalState.Inventory["hybrid__old_forest_spirit__old_forest_spirit"]).to.equal(1)
 			expect(finalState.Inventory["old_forest_spirit"]).to.equal(nil)
 		end)
 
@@ -98,7 +98,7 @@ return function()
 			-- Glaubenspunkte und Original-Essenzen müssen zu 100% restauriert sein!
 			expect(finalState.Belief).to.equal(500)
 			expect(finalState.Inventory["old_forest_spirit"]).to.equal(2)
-			expect(finalState.Inventory["hybrid_old_forest_spirit_old_forest_spirit"]).to.equal(nil)
+			expect(finalState.Inventory["hybrid__old_forest_spirit__old_forest_spirit"]).to.equal(nil)
 		end)
 
 		it("sollte Fusionen blockieren, wenn nicht genügend Glaubenspunkte (Belief) vorhanden sind", function()

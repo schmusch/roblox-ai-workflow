@@ -108,14 +108,56 @@ function FusionTransactionModule.ProcessWrite(player: Player, simulatedFailure: 
 	end
 
 	-- Erfolgreiche Transaktion: Hybrid-Gottheit erstellen
-	-- Benennungsschema: hybrid_deityA_deityB
-	local hybridId = string.format("hybrid_%s_%s", tx.DeityA, tx.DeityB)
+	-- Benennungsschema: hybrid__deityA__deityB (Doppel-Unterstrich zur ausnahmslos sicheren Trennung)
+	local hybridId = string.format("hybrid__%s__%s", tx.DeityA, tx.DeityB)
 	PlayerDataStore.grantInventoryItem(player, hybridId)
 
 	tx.Status = "committed"
 	activeTransactions[player] = nil -- Aus aktiver Queue entfernen
 
 	return true, "Fusion erfolgreich durchgeführt! Hybrid-Gottheit wurde im Inventar hinterlegt."
+end
+
+-- Entkoppelt einen stabilisierten Hybrid-Gott gegen eine Glaubensgebühr und erstattet die beiden Eltern-Essenzen zurück
+function FusionTransactionModule.UnfuseHybrid(player: Player, hybridId: string, unfuseFee: number): (boolean, string?)
+	local state = PlayerDataStore.getPlayerState(player)
+
+	-- 1. Glaubensguthaben für Entkopplungsgebühr prüfen
+	if state.Belief < unfuseFee then
+		return false, "Nicht genügend Glaubenspunkte für die Entkoppelungsgebühr!"
+	end
+
+	-- 2. Besitz der Hybrid-Gottheit im Inventar prüfen
+	if not PlayerDataStore.hasInventoryItem(player, hybridId) then
+		return false, "Die angegebene Hybrid-Gottheit befindet sich nicht in deinem Inventar!"
+	end
+
+	-- 3. Hybrid-ID parsen
+	if not string.match(hybridId, "^hybrid__") then
+		return false, "Es handelt sich nicht um eine gültige fusionierte Hybrid-Gottheit!"
+	end
+
+	local parts = string.split(hybridId, "__")
+	if #parts < 3 or parts[1] ~= "hybrid" then
+		return false, "Ungültiges Format der Hybrid-Gottheit-ID!"
+	end
+
+	local deityA = parts[2]
+	local deityB = parts[3]
+
+	-- 4. Gebühr abziehen und Hybrid-Monument entfernen
+	local adjustSuccess = PlayerDataStore.adjustBelief(player, -unfuseFee)
+	local consumeSuccess = PlayerDataStore.consumeInventoryItem(player, hybridId)
+
+	if not (adjustSuccess and consumeSuccess) then
+		return false, "Fehler beim Abbuchen der Gebühr oder beim Entfernen des Hybrids!"
+	end
+
+	-- 5. Beide Original-Elternteile wieder im Inventar gutschreiben
+	PlayerDataStore.grantInventoryItem(player, deityA)
+	PlayerDataStore.grantInventoryItem(player, deityB)
+
+	return true, nil
 end
 
 -- Führt einen sicheren Rollback aus und erstattet alle gesperrten Ressourcen zurück
