@@ -30,12 +30,25 @@ function FusionInheritanceModule.VerifyParents(parentA: DeityConfig, parentB: De
 	return true, nil
 end
 
--- Generiert eine neue hybride DeityConfig unter Anwendung Mendelscher Vererbungsgesetze und Stimulationsfaktoren
-function FusionInheritanceModule.GenerateHybrid(parentA: DeityConfig, parentB: DeityConfig, S: number, customRandom: (() -> number)?): (DeityConfig, string?)
+-- Generiert eine neue hybride DeityConfig unter Anwendung Mendelscher Vererbungsgesetze, Komfortwerte und Mutationen
+function FusionInheritanceModule.GenerateHybrid(
+	parentA: DeityConfig,
+	parentB: DeityConfig,
+	S: number,
+	comfort: number?,
+	roomClass: string?,
+	customRandom: (() -> number)?
+): (DeityConfig, string?)
 	-- 1. Zulässigkeit prüfen
 	local isAllowed, err = FusionInheritanceModule.VerifyParents(parentA, parentB)
 	if not isAllowed then
 		return nil :: any, err
+	end
+
+	-- 2. Komfort-Sperre prüfen (Mindestkomfort 10 erforderlich)
+	local c = comfort or 100
+	if c < 10 then
+		return nil :: any, "Raumkomfort zu gering! Mindestkomfort von 10 erforderlich."
 	end
 
 	local rand = customRandom or math.random
@@ -61,6 +74,22 @@ function FusionInheritanceModule.GenerateHybrid(parentA: DeityConfig, parentB: D
 	local hybridAttack = inheritStat(parentA.BaseAttack, parentB.BaseAttack)
 	local hybridSpeed = inheritStat(parentA.BaseSpeed, parentB.BaseSpeed)
 
+	-- 3. Mutationssteuerung bei maximiertem Komfort (c == 100)
+	local talent: string? = nil
+	if c == 100 and roomClass then
+		-- Mutation triggert mit 20% Wahrscheinlichkeit (roll <= 0.2)
+		local roll = rand()
+		if roll <= 0.20 then
+			if roomClass == "Barracks" then
+				hybridAttack = math.floor(hybridAttack * 1.20) -- Kriegszorn: +20% Angriffskraft!
+				talent = "Kriegszorn"
+			elseif roomClass == "Royal" then
+				hybridHP = math.floor(hybridHP * 1.20) -- Göttlicher Segen: +20% HP!
+				talent = "GöttlicherSegen"
+			end
+		end
+	end
+
 	-- Erzeugt eine neue, stabilisierte Hybrid-Konfiguration
 	local hybridId = string.format("hybrid__%s__%s", parentA.Id, parentB.Id)
 	local hybridName = string.format("Stabilisierter Hybrid (%s + %s)", parentA.Name, parentB.Name)
@@ -68,7 +97,7 @@ function FusionInheritanceModule.GenerateHybrid(parentA: DeityConfig, parentB: D
 	local hybridConfig: DeityConfig = {
 		Id = hybridId,
 		Name = hybridName,
-		Faction = parentA.Faction, -- Übernimmt die Fraktion des Primärelters
+		Faction = parentA.Faction,
 		Element = parentA.Element,
 		Role = parentA.Role,
 		AttackRange = math.max(parentA.AttackRange, parentB.AttackRange),
@@ -79,7 +108,8 @@ function FusionInheritanceModule.GenerateHybrid(parentA: DeityConfig, parentB: D
 		BaseHP = hybridHP,
 		BaseAttack = hybridAttack,
 		BaseSpeed = hybridSpeed,
-		IsStabilized = true, -- Persistentes Stabilisierungs-Flag!
+		IsStabilized = true,
+		Talent = talent, -- Persistentes passive Talent!
 	}
 
 	return hybridConfig, nil

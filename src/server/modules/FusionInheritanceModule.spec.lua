@@ -1,4 +1,4 @@
---strict
+--!strict
 -- Platziert in: src/server/modules/FusionInheritanceModule.spec.lua
 
 return function()
@@ -80,7 +80,7 @@ return function()
 			it("sollte bei S = 0 mit determiniertem customRandom entweder bessere oder schlechtere Werte vererben", function()
 				-- Custom Random-Funktion, die 0.2 zurückgibt (also <= 0.5 -> Bessere Werte vererben)
 				local mockRandBetter = function() return 0.2 end
-				local hybridBetter, errBetter = FusionInheritanceModule.GenerateHybrid(parentA, parentB, 0, mockRandBetter)
+				local hybridBetter, errBetter = FusionInheritanceModule.GenerateHybrid(parentA, parentB, 0, nil, nil, mockRandBetter)
 				expect(errBetter).to.equal(nil)
 				expect(hybridBetter.BaseHP).to.equal(250)
 				expect(hybridBetter.BaseAttack).to.equal(25)
@@ -88,7 +88,7 @@ return function()
 
 				-- Custom Random-Funktion, die 0.8 zurückgibt (also > 0.5 -> Schlechtere Werte vererben)
 				local mockRandWorse = function() return 0.8 end
-				local hybridWorse, errWorse = FusionInheritanceModule.GenerateHybrid(parentA, parentB, 0, mockRandWorse)
+				local hybridWorse, errWorse = FusionInheritanceModule.GenerateHybrid(parentA, parentB, 0, nil, nil, mockRandWorse)
 				expect(errWorse).to.equal(nil)
 				expect(hybridWorse.BaseHP).to.equal(100)
 				expect(hybridWorse.BaseAttack).to.equal(10)
@@ -159,6 +159,74 @@ return function()
 				local state = PlayerDataStore.getPlayerState(mockPlayer)
 				expect(state.Belief).to.equal(50)
 				expect(state.Inventory["hybrid__old_forest_spirit__sun_temple"]).to.equal(1)
+			end)
+		end)
+
+		describe("Raumkomfort & Mutations-Steuerung (Epic 4.4)", function()
+			local parentA: DeityCatalog.DeityConfig
+			local parentB: DeityCatalog.DeityConfig
+
+			beforeEach(function()
+				parentA = DeityCatalog.GetProfile(101) -- Forest Spirit (HP: 100, Attack: 10)
+				parentB = DeityCatalog.GetProfile(102) -- Sun Temple (HP: 250, Attack: 25)
+			end)
+
+			it("sollte Fusionen strikt ablehnen, wenn der Komfort unter 10 liegt", function()
+				local hybrid, err = FusionInheritanceModule.GenerateHybrid(parentA, parentB, 50, 5) -- Komfort 5
+				expect(hybrid).to.equal(nil)
+				expect(string.find(err or "", "Raumkomfort zu gering") ~= nil).to.equal(true)
+			end)
+
+			it("sollte Fusionen zulassen, wenn der Komfort genau 10 beträgt", function()
+				local hybrid, err = FusionInheritanceModule.GenerateHybrid(parentA, parentB, 50, 10) -- Komfort 10 (Minimum)
+				expect(err).to.equal(nil)
+				expect(hybrid).to.never.equal(nil)
+			end)
+
+			it("sollte bei maximalem Komfort und Klasse 'Barracks' mit erfolgreichem Roll das Talent 'Kriegszorn' (+20% Attack) vergeben", function()
+				-- Custom Random-Funktion: Liefert 1.0 (für S=100 Vererbungsgewährleistung) und 0.1 (für Mutations-Roll <= 0.20)
+				local rolls = { 1.0, 0.1 }
+				local rollIndex = 0
+				local mockRand = function()
+					rollIndex = rollIndex + 1
+					return rolls[rollIndex] or 0.1
+				end
+
+				local hybrid, err = FusionInheritanceModule.GenerateHybrid(parentA, parentB, 100, 100, "Barracks", mockRand)
+				expect(err).to.equal(nil)
+				expect(hybrid).to.never.equal(nil)
+				expect(hybrid.Talent).to.equal("Kriegszorn")
+				expect(hybrid.BaseAttack).to.equal(30) -- 25 * 1.20 = 30
+			end)
+
+			it("sollte bei maximalem Komfort und Klasse 'Royal' mit erfolgreichem Roll das Talent 'GöttlicherSegen' (+20% HP) vergeben", function()
+				local rolls = { 1.0, 0.1 }
+				local rollIndex = 0
+				local mockRand = function()
+					rollIndex = rollIndex + 1
+					return rolls[rollIndex] or 0.1
+				end
+
+				local hybrid, err = FusionInheritanceModule.GenerateHybrid(parentA, parentB, 100, 100, "Royal", mockRand)
+				expect(err).to.equal(nil)
+				expect(hybrid).to.never.equal(nil)
+				expect(hybrid.Talent).to.equal("GöttlicherSegen")
+				expect(hybrid.BaseHP).to.equal(300) -- 250 * 1.20 = 300
+			end)
+
+			it("sollte keine Mutation vergeben, wenn der Random Roll fehlschlägt", function()
+				local rolls = { 1.0, 0.5 } -- 0.5 > 0.20 -> Mutations-Roll fehlgeschlagen
+				local rollIndex = 0
+				local mockRand = function()
+					rollIndex = rollIndex + 1
+					return rolls[rollIndex] or 0.5
+				end
+
+				local hybrid, err = FusionInheritanceModule.GenerateHybrid(parentA, parentB, 100, 100, "Barracks", mockRand)
+				expect(err).to.equal(nil)
+				expect(hybrid).to.never.equal(nil)
+				expect(hybrid.Talent).to.equal(nil)
+				expect(hybrid.BaseAttack).to.equal(25) -- Unverändert 25
 			end)
 		end)
 	end)

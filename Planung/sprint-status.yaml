@@ -51,11 +51,11 @@ development_status:
   3-6-server-authoritative-latenz-rollback-validierer-rollbackmodule-luau: done
   epic-3-retrospective: done
 
-  epic-4: in-progress
+  epic-4: done
   4-1-true-logarithmic-deity-evolution-module: done
   4-2-transactional-fusion-queue-profileservice: done
   4-3-sakrales-fusions-mendelsches-vererbungssystem: done
-  4-4-raumkomfort-mutations-steuerung: backlog
+  4-4-raumkomfort-mutations-steuerung: done
   epic-4-retrospective: optional
 
   epic-5: backlog

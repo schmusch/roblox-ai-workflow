@@ -20,6 +20,7 @@ export type DeityConfig = {
 	BaseAttack: number,
 	BaseSpeed: number,
 	IsStabilized: boolean?,
+	Talent: string?,
 }
 
 -- Fallback-Profil für Unit-Tests oder unbekannte IDs (Zero-Allocation, statisch definiert)
