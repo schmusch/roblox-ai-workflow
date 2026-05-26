@@ -78,10 +78,24 @@ function PlayerDataStore.consumeInventoryItem(player: Player, deityId: string): 
 	return true
 end
 
+-- Fügt ein Item zum Inventar hinzu
+function PlayerDataStore.grantInventoryItem(player: Player, deityId: string)
+	local state = PlayerDataStore.getPlayerState(player)
+	state.Inventory[deityId] = (state.Inventory[deityId] or 0) + 1
+	syncInventory(player, state)
+end
+
+-- Erzwingt einen bestimmten Inventar-Zustand (für transaktionale Rollbacks)
+function PlayerDataStore.forceUpdateInventory(player: Player, inventory: { [string]: number })
+	local state = PlayerDataStore.getPlayerState(player)
+	state.Inventory = inventory
+	syncInventory(player, state)
+end
+
 -- Raeumt den Speicher auf, wenn ein Spieler das Spiel verlaesst
 function PlayerDataStore.clearPlayerState(player: Player)
 	States[player] = nil
 end
 
 return PlayerDataStore
--- Cache purge sync v2
+-- Cache purge sync v3

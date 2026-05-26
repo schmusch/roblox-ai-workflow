@@ -9,8 +9,10 @@ print("--------------------------------------------------")
 print("[TDD RUNNER] Starte automatisierte Unit-Tests...")
 print("--------------------------------------------------")
 
--- Führt alle Tests unter ServerScriptService.Server.modules aus
-local results = TestEZ.TestBootstrap:run({ ServerScriptService.Server.modules })
+-- Führt alle Tests unter ServerScriptService.Server.modules aus (abgesichert gegen Timing-Probleme)
+local serverFolder = ServerScriptService:WaitForChild("Server")
+local modulesFolder = serverFolder:WaitForChild("modules")
+local results = TestEZ.TestBootstrap:run({ modulesFolder })
 
 local summary = {
 	failureCount = results.failureCount,
@@ -44,6 +46,7 @@ if not testResultsVal then
 	testResultsVal.Parent = workspace
 end
 testResultsVal.Value = HttpService:JSONEncode(summary)
+print("TEST_RESULTS_JSON:" .. HttpService:JSONEncode(summary))
 
 if results.failureCount > 0 then
 	warn(string.format("[TDD FAILED] %d Tests sind fehlgeschlagen!", results.failureCount))

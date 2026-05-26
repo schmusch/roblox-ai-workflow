@@ -172,6 +172,7 @@ function GridModule.PlaceObject(player: Player, deityId: string, cellX: number, 
 		part.Color = Color3.fromRGB(180, 180, 200) -- Schönes Marmor-Grau für Monumente!
 		part.Anchored = true
 		part.CanCollide = true
+		part:SetAttribute("Level", 1)
 		part.Parent = placedObjectsFolder
 	end
 
