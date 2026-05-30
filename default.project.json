@@ -17,6 +17,18 @@
         },
         "PlacementRemote": {
           "$className": "RemoteEvent"
+        },
+        "CatastropheRemote": {
+          "$className": "RemoteEvent"
+        },
+        "StartCleansing": {
+          "$className": "RemoteEvent"
+        },
+        "CompleteCleansing": {
+          "$className": "RemoteEvent"
+        },
+        "TriggerPrestige": {
+          "$className": "RemoteEvent"
         }
       }
     },

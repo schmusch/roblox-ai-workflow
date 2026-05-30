@@ -1,0 +1,66 @@
+# generated: 2026-05-25
+# last_updated: 2026-05-25
+# project: Gods & Icons
+# tracking_system: file-system
+# story_location: Planung/stories
+
+# STATUS DEFINITIONS:
+# ==================
+# Epic Status:
+#   - backlog: Epic not yet started
+#   - in-progress: Epic actively being worked on
+#   - done: All stories in epic completed
+#
+# Story Status:
+#   - backlog: Story only exists in epic file
+#   - ready-for-dev: Story file created in stories folder
+#   - in-progress: Developer actively working on implementation
+#   - review: Ready for code review (via Dev's code-review workflow)
+#   - done: Story completed
+
+generated: "2026-05-25"
+last_updated: "2026-05-26"
+project: "Gods & Icons"
+tracking_system: "file-system"
+story_location: "Planung/stories"
+
+development_status:
+  epic-1: done
+  1-1-shared-mathematical-snapping: done
+  1-2-interactive-client-bounding-box-preview: done
+  1-3-server-authoritative-placement-verification: done
+  1-4-real-time-belief-view-tick-based-passive-income: done
+  1-5-dynamic-deity-selection-menu-inventory-replication: done
+  1-6-server-authoritative-voxel-kollision-boundary-verification: done
+  epic-1-retrospective: done
+
+  epic-2: done
+  2-1-asynchronous-catastrophe-spawner: done
+  2-2-cellular-damping-zones: done
+  2-3-server-verified-proximity-cleansing: done
+  2-4-anti-speedhack-session-verification-damped-offline-progression: done
+  2-5-synkretistischer-epochenuebergang-rebirth-system: done
+  epic-2-retrospective: done
+
+  epic-3: done
+  3-1-zero-allocation-ap-calculations-ring-buffer: done
+  3-2-exploit-proof-90-frame-combat-rollback-system: done
+  3-3-tactical-euclidean-targeting-battle-orchestrator: done
+  3-4-predicted-auras-1-5s-ascension-lock: done
+  3-5-binary-ring-buffer-packing-architecture-ringbuffermodule-luau: done
+  3-6-server-authoritative-latenz-rollback-validierer-rollbackmodule-luau: done
+  epic-3-retrospective: done
+
+  epic-4: done
+  4-1-true-logarithmic-deity-evolution-module: done
+  4-2-transactional-fusion-queue-profileservice: done
+  4-3-sakrales-fusions-mendelsches-vererbungssystem: done
+  4-4-raumkomfort-mutations-steuerung: done
+  epic-4-retrospective: optional
+
+  epic-5: backlog
+  5-1-pantheon-noir-aura-alternator: backlog
+  5-2-light-weight-lod-mesh-swapper-slim: backlog
+  5-3-glaube-momente-video-capture-integration: backlog
+  5-4-konformes-moments-sharing-policyservice-schutz: backlog
+  epic-5-retrospective: optional

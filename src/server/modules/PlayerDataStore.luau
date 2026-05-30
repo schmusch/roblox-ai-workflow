@@ -1,16 +1,25 @@
 --!strict
+local HttpService = game:GetService("HttpService")
 local PlayerDataStore = {}
 
-type PlayerState = {
+export type PlayerState = {
 	Belief: number,
-	Inventory: { [string]: number }
+	Inventory: { [string]: number },
+	LastSaveTime: number?
 }
 
 local States: { [Player]: PlayerState } = {}
 
+local function syncInventory(player: Player, state: PlayerState)
+	pcall(function()
+		(player :: any):SetAttribute("CitadelInventory", HttpService:JSONEncode(state.Inventory))
+	end)
+end
+
 -- Setzt den Zustand eines Spielers (wird fuer Initialisierung und Mocking in Tests genutzt)
 function PlayerDataStore.setPlayerState(player: Player, state: PlayerState)
 	States[player] = state
+	syncInventory(player, state)
 end
 
 -- Gibt den aktuellen Zustand des Spielers zurueck
@@ -20,7 +29,8 @@ function PlayerDataStore.getPlayerState(player: Player): PlayerState
 		-- Fallback-Zustand, falls nicht initialisiert
 		state = {
 			Belief = 0,
-			Inventory = {}
+			Inventory = {},
+			LastSaveTime = os.time()
 		}
 		States[player] = state
 	end
@@ -34,6 +44,12 @@ function PlayerDataStore.adjustBelief(player: Player, amount: number): boolean
 		return false -- Nicht genügend Glaubenspunkte!
 	end
 	state.Belief = state.Belief + amount
+	
+	-- Synchronisiere den aktuellen Kontostand auf dem Spieler-Objekt für den Client (JSON-Sync bypass via native Attribute)
+	pcall(function()
+		(player :: any):SetAttribute("CitadelBelief", state.Belief)
+	end)
+	
 	return true
 end
 
@@ -56,7 +72,24 @@ function PlayerDataStore.consumeInventoryItem(player: Player, deityId: string): 
 	if state.Inventory[deityId] == 0 then
 		state.Inventory[deityId] = nil :: any -- Aus dem Diktionaer entfernen (Heap-Leak Schutz)
 	end
+	
+	syncInventory(player, state)
+	
 	return true
+end
+
+-- Fügt ein Item zum Inventar hinzu
+function PlayerDataStore.grantInventoryItem(player: Player, deityId: string)
+	local state = PlayerDataStore.getPlayerState(player)
+	state.Inventory[deityId] = (state.Inventory[deityId] or 0) + 1
+	syncInventory(player, state)
+end
+
+-- Erzwingt einen bestimmten Inventar-Zustand (für transaktionale Rollbacks)
+function PlayerDataStore.forceUpdateInventory(player: Player, inventory: { [string]: number })
+	local state = PlayerDataStore.getPlayerState(player)
+	state.Inventory = inventory
+	syncInventory(player, state)
 end
 
 -- Raeumt den Speicher auf, wenn ein Spieler das Spiel verlaesst
@@ -65,3 +98,4 @@ function PlayerDataStore.clearPlayerState(player: Player)
 end
 
 return PlayerDataStore
+-- Cache purge sync v3
