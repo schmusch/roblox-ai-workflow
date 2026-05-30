@@ -18,9 +18,9 @@ artifact-type: skill
 
 - **Language:** German for user communications and retrospective outputs. English for technical keys.
 - **Paths**:
-  - `sprint_status` = `docs/implementation-artifacts/sprint-status.yaml`
-  - `retrospectives_folder` = `docs/implementation-artifacts/retrospectives`
-  - `stories_folder` = `docs/implementation-artifacts/stories`
+  - `sprint_status` = `docs/sprint-status.yaml`
+  - `retrospectives_folder` = `docs/retrospectives`
+  - `stories_folder` = `docs/stories`
 
 ---
 
@@ -65,10 +65,11 @@ artifact-type: skill
 - [Cites to specific file locations and patterns]
 ```
 
-### Step 3: Close Epic Status
+### Step 3: Close Epic Status & Sync Docs
 1. Update `{sprint_status}`:
    - Change `epic-{epic_num}` status to `done`.
    - Change `epic-{epic_num}-retrospective` status to `done`.
    - Update `last_updated` date.
-2. Log this milestone in the global Project Hub (`00_Roblox-Game-Dev Hub.md`) under the `## 📜 Log` section, adding at least 2 inline wikilinks.
-3. Present the compiled retrospective to the user in German, highlighting the top three technical rules established for the next sprint.
+2. **Technical Architecture Sync**: Review the compiled retrospective learnings and touched files. If any permanent architectural changes, new core services, data schemas, or structural guidelines were established during the sprint, the agent MUST update `docs/00.2_Gods-and-Icons-Blueprint.md` (Blueprint) or `docs/00.1_Game-Brief.md` (Brief) directly to prevent documentation drift.
+3. Log this milestone in the global Project Hub (`00_Roblox-Game-Dev Hub.md`) under the `## 📜 Log` section, adding at least 2 inline wikilinks.
+4. Present the compiled retrospective to the user in German, highlighting the top three technical rules established for the next sprint.

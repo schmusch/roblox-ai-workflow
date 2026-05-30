@@ -2,6 +2,33 @@
 
 This file is the entry point for Codex CLI and any other agentic platform that reads `AGENTS.md`. The canonical skill content lives in `skills/<name>/SKILL.md` and is shared with Claude Code (`CLAUDE.md`) and Gemini CLI (`GEMINI.md`).
 
+## Kanonischer Doku-Index & KI-Einstieg
+
+Bevor du mit einer Aufgabe startest oder Code generierst, konsultiere immer den aktuellen Dokumentations-Kanon unter:
+- **[docs/README.md](docs/README.md)**: Der Doku-Map-Index mit allen Quellenregeln und Zuordnungen.
+- **[docs/AI_HANDOFF.md](docs/AI_HANDOFF.md)**: Der dedizierte KI-Einstiegspunkt mit Vision, Feature-Ist-Stand, anstehenden Backlog-Punkten, Verifikationsgates und Roblox-MCP-Tipps.
+
+### Quellenrang (Source of Truth Hierarchy)
+Sollte es zwischen verschiedenen Dateien zu inhaltlichen Widersprüchen kommen, gilt folgende feste Rangordnung:
+1. **Code + [docs/sprint-status.yaml](docs/sprint-status.yaml)** = Absoluter Ist-Stand (Wahrheit bei Drift).
+2. **[docs/epics_and_stories.md](docs/epics_and_stories.md)** = Geplantes Soll-Verhalten (Backlog & Acceptance Criteria).
+3. **[docs/00.1_Game-Brief.md](docs/00.1_Game-Brief.md)** = Spieldesign-Vision & Player Fantasy.
+4. **[docs/00.2_Gods-and-Icons-Blueprint.md](docs/00.2_Gods-and-Icons-Blueprint.md)** = Technische Architektur.
+5. **[docs/Spielmechanik_Uebersicht.md](docs/Spielmechanik_Uebersicht.md)** = Aktuelle Feature-Matrix.
+
+> [!CAUTION]
+> **Archivierte Dokumente**: Dateien im Ordner `docs/_Archiv/` sind historisch und dürfen NIEMALS als aktuelle Vorgaben oder Wahrheit für Codeänderungen herangezogen werden!
+
+## Neue Ideen & Feature-Pipeline (Ideen-Handoff)
+
+Wenn der User neue Spielideen einbringt (Trigger: *"Ich habe eine neue Idee: [Name]"* oder *"Lass uns ein Feature brainstormen: [Name]"*), **MUSST** du dieser strukturierten Pipeline autonom folgen:
+
+1. **Phase A: Brainstorming & PRD**: Aktiviere `roblox-deep-interview`. Stelle sokratische Fragen zu Player Fantasy, Progression, Motivationen und Exploits. Erstelle anschließend das Feature-Briefing (PRD) unter `docs/features/[feature_name]_brief.md` (Nutze `roblox-forge-init` als Schablone).
+2. **Phase B: Architektur-Entwurf**: Aktiviere `roblox-blueprint`. Übersetze das Briefing in einen technischen Blueprint mit Remotes, Datenschemata und Rojo-Dateibaum unter `docs/features/[feature_name]_blueprint.md`.
+3. **Phase C: Scrum-Board-Sync**: Aktiviere `roblox-scrum-create-epics`, um den Blueprint in konkrete Epics und Stories (mit Given-When-Then-Kriterien) zu zerlegen und in `docs/epics_and_stories.md` einzupflegen. Führe danach `roblox-scrum-planning` aus, um die Stories als `backlog` in `docs/sprint-status.yaml` einzusortieren.
+
+Begleite den Creator im Chat auf Deutsch und führe ihn Schritt für Schritt durch diese Pipeline.
+
 ## How to use skills here
 
 Skills are plain Markdown files with YAML frontmatter. There is no "Skill tool" required — read them directly, and follow the instructions as you would any prompt fragment.

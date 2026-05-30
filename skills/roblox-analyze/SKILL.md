@@ -44,6 +44,14 @@ No code changes. No recommendations to act on yet. Just the map.
 ### 1. Inventory the surface
 
 Before reading content, list what exists:
+- Check the canonical entry points: `docs/README.md` and `docs/AI_HANDOFF.md` to get the latest workspace status and rules.
+- Always respect the **Quellenrang (Source of Truth Hierarchy)**:
+  1. Code + `docs/sprint-status.yaml` (actual current state)
+  2. `docs/epics_and_stories.md` (planned backlog behavior)
+  3. `docs/00.1_Game-Brief.md` (design vision & player fantasy)
+  4. `docs/00.2_Gods-and-Icons-Blueprint.md` (technical architecture blueprint)
+  5. `docs/Spielmechanik_Uebersicht.md` (feature matrix)
+- Do **NOT** use historical or archived files from `docs/_Archiv/` as active requirements.
 - Top-level folders.
 - Build / package config (`default.project.json` for Rojo, `wally.toml`, `aftman.toml`, `selene.toml`, `stylua.toml`).
 - Test runner config (`testez.toml`, `jest.config.luau`).

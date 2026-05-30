@@ -18,11 +18,11 @@ artifact-type: skill
 
 - **Language:** Perform the workflow in English. Respond and communicate with the creator/user in German (their primary language) unless requested otherwise.
 - **Paths**:
-  - `planning_artifacts` = `docs/planning-artifacts` (or fallback to `planning-artifacts` or `plans`)
-  - `implementation_artifacts` = `docs/implementation-artifacts` (or fallback to `implementation-artifacts` or `plans`)
+  - `planning_artifacts` = `docs`
+  - `implementation_artifacts` = `docs`
   - `status_file` = `{implementation_artifacts}/sprint-status.yaml`
   - `stories_folder` = `{implementation_artifacts}/stories`
-  - `epics_pattern` = `*epic*.md`
+  - `epics_pattern` = `epics_and_stories.md`
 
 ---
 
@@ -73,7 +73,7 @@ Write the complete YAML content to `{status_file}`. The file must contain both d
 # last_updated: 2026-05-24
 # project: Roblox Game Dev
 # tracking_system: file-system
-# story_location: docs/implementation-artifacts/stories
+# story_location: docs/stories
 
 # STATUS DEFINITIONS:
 # ==================
@@ -93,7 +93,7 @@ generated: "2026-05-24"
 last_updated: "2026-05-24"
 project: "Roblox Game Dev"
 tracking_system: "file-system"
-story_location: "docs/implementation-artifacts/stories"
+story_location: "docs/stories"
 
 development_status:
   epic-1: backlog

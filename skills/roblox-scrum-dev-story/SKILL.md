@@ -18,8 +18,8 @@ artifact-type: skill
 
 - **Language:** Communicate all responses and logs in German (tailored to creator experience), but keep Luau technical specs and code comments in English.
 - **Paths**:
-  - `sprint_status` = `docs/implementation-artifacts/sprint-status.yaml`
-  - `stories_folder` = `docs/implementation-artifacts/stories`
+  - `sprint_status` = `docs/sprint-status.yaml`
+  - `stories_folder` = `docs/stories`
 - **Roblox-Native Guardrails**:
   - **Server Authority**: Clients request, server validates, server mutates canonical state. Validate all RemoteEvent/RemoteFunction parameters strictly on the server.
   - **No Enterprise Slop**: Use pure Luau, standard engine services, and component/module terminology.
@@ -69,11 +69,15 @@ Execute the tasks and subtasks listed in the story spec in exact sequential orde
 2. If any blocker arises or external library dependencies are missing, pause work, log the status, and seek the creator's guidance. Do not halt mid-execution for minor milestones.
 
 ### Step 5: Finalize and Move to Review
-1. Once all acceptance criteria are checked and all tasks are `[x]`, run a **COMPLETE & EXHAUSTIVE VERIFICATION**:
+1. Once all acceptance criteria are checked and all tasks are `[x]`, run a **COMPLETE & EXHAUSTIVE VERIFICATION & SYNC**:
    - Compile the game tree using Rojo and ensure no Wally lock violations.
    - **Exhaustive Testing**: Run the full TestEZ / Jest-Roblox test suite. Assert that all unit, module, and replication tests are 100% green.
    - **Manual/Console Audit**: Check the console output (`get_console_output`) during active Play Solo testing to ensure zero runtime warnings or exceptions exist.
    - **Mandatory Visual Verification**: Trigger a screen capture in Roblox Studio using the `screen_capture` tool. Save this screenshot as visual evidence in the implementation folder (or display it to the user). Confirm that UI overlays, character visuals, or modifications align perfectly with GDD/UX specs.
+   - **Documentation Maintenance**: The developer agent MUST keep all documentation in sync with code modifications to prevent drift:
+     a) If the implementation introduced or modified RemoteEvents, RemoteFunctions, data schemas (PlayerDataStore), or significant structural ModuleScripts, update the Technical Architecture Blueprint (`docs/00.2_Gods-and-Icons-Blueprint.md`).
+     b) If the implementation introduced or modified game mechanics, unit designs, tycoon economics, player progression, or gacha balance, update the Game Brief (`docs/00.1_Game-Brief.md`).
+     c) If the overall features of the game were expanded or changed, update the Feature Matrix (`docs/Spielmechanik_Uebersicht.md`).
 2. Update `{sprint_status}`: change `{story_key}` status to `review`.
 3. Inform the user in German of successful implementation, outputting:
    - File list of created/modified assets.

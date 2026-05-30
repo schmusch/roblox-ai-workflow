@@ -18,9 +18,9 @@ Dieses Projekt nutzt ein fortschrittliches **Roblox AI-Workflow System (SSOT)**,
 
 Dieses Repository ist als **Single Source of Truth (SSOT)** für KI-gestützte Entwicklung konzipiert. Es enthält vordefinierte Fähigkeiten ("Skills") und Entwicklungsrichtlinien, die von KIs direkt gelesen und ausgeführt werden können:
 
-* **[CLAUDE.md](file:///g:/Meine%20Ablage/Projekte/GameDev/Roblox/Gods%20and%20Icons/CLAUDE.md):** Einstiegspunkt und Skill-Katalog für **Claude Code**.
-* **[GEMINI.md](file:///g:/Meine%20Ablage/Projekte/GameDev/Roblox/Gods%20and%20Icons/GEMINI.md):** Einstiegspunkt und Skill-Katalog für **Gemini CLI**.
-* **[AGENTS.md](file:///g:/Meine%20Ablage/Projekte/GameDev/Roblox/Gods%20and%20Icons/AGENTS.md):** Universeller Einstiegspunkt für **Codex** und andere LLM-Agenten.
+* **[CLAUDE.md](CLAUDE.md):** Einstiegspunkt und Skill-Katalog für **Claude Code**.
+* **[GEMINI.md](GEMINI.md):** Einstiegspunkt und Skill-Katalog für **Gemini CLI**.
+* **[AGENTS.md](AGENTS.md):** Universeller Einstiegspunkt für **Codex** und andere LLM-Agenten.
 
 ### ⚙️ Kern-Arbeitsablauf (Canonical Workflow)
 ```
@@ -41,7 +41,7 @@ Die Verzeichnisstruktur vereint Spieldateien, systematische Spieldesign-Dokument
  ├── 📄 GEMINI.md              # Gemini CLI Einstiegspunkt (AI SSOT)
  ├── 📄 AGENTS.md              # Codex/Agenten Einstiegspunkt (AI SSOT)
  ├── 📄 README.md              # Dieses Entwickler-Portal & Navigation
- ├── 📁 Planung/               # Zentraler Spieldesign- & Planungsordner
+ ├── 📁 docs/                  # Zentraler Spieldesign- & Planungsordner
  │    ├── 📄 00.1_Game-Brief.md
  │    ├── 📄 00.2_Gods-and-Icons-Blueprint.md
  │    ├── 📁 01_GDD-Basis/      # Ebene 01 - Spieldesign & Ökonomie
@@ -60,21 +60,21 @@ Nutze die folgende Tabelle, um direkt in die Teildomänen einzusteigen. Jedes Do
 
 | Ebene | Datei | Beschreibung | Kerninhalte |
 | :---: | :--- | :--- | :--- |
-| **00** | [00.1_Game-Brief.md](file:///g:/Meine%20Ablage/Projekte/GameDev/Roblox/Gods%20and%20Icons/Planung/00.1_Game-Brief.md) | **Projekt-Zusammenfassung** | Core Loop, Zielgruppe (US 18+), Monetarisierungs-Konzept, grober Rahmen. |
-| **00** | [00.2_Gods-and-Icons-Blueprint.md](file:///g:/Meine%20Ablage/Projekte/GameDev/Roblox/Gods%20and%20Icons/Planung/00.2_Gods-and-Icons-Blueprint.md) | **Technische Architektur** | Server/Client Ownership Matrix, Datei-Layout, Luau-Typen, Remote-Protokolle. |
-| **01** | [01.1_Goetter-Design-Framework.md](file:///g:/Meine%20Ablage/Projekte/GameDev/Roblox/Gods%20and%20Icons/Planung/01_GDD-Basis/01.1_Goetter-Design-Framework.md) | **Visuelles Framework** | Ästhetischer Kontrast (Pantheon-Noir), R15-Rig-Anpassung, SLIM-LOD-System. |
-| **01** | [01.2_Goetter-Tempel-Wirtschaft.md](file:///g:/Meine%20Ablage/Projekte/GameDev/Roblox/Gods%20and%20Icons/Planung/01_GDD-Basis/01.2_Goetter-Tempel-Wirtschaft.md) | **Tycoon-System** | Asymmetrische Wirtschaft, zellulares Gitter, Glaubensgenerierung, Katastrophen. |
-| **01** | [01.3_Goetter-Kampf-Framework.md](file:///g:/Meine%20Ablage/Projekte/GameDev/Roblox/Gods%20and%20Icons/Planung/01_GDD-Basis/01.3_Goetter-Kampf-Framework.md) | **Kampfsystem** | 3x3 Auto-Battler, Einheiten-Rollen, euklidisches Targeting, Interventionen. |
-| **01** | [01.4_Goetter-Evolution.md](file:///g:/Meine%20Ablage/Projekte/GameDev/Roblox/Gods%20and%20Icons/Planung/01_GDD-Basis/01.4_Goetter-Evolution.md) | **Progressions-Loop** | Prestige-System (Rebirth), Sakrale Fusion (Breeding), Gacha-Pity-System. |
-| **01** | [01.5_Monetarisierung-Viralitaet.md](file:///g:/Meine%20Ablage/Projekte/GameDev/Roblox/Gods%20and%20Icons/Planung/01_GDD-Basis/01.5_Monetarisierung-Viralitaet.md) | **Wirtschaft & Social** | Fair-Play VIP-Server, Roblox Moments Integration, Sharing-Richtlinien. |
-| **02** | [02.1_Spieldesign-Spielerpsychologie-Optimierung.md](file:///g:/Meine%20Ablage/Projekte/GameDev/Roblox/Gods%20and%20Icons/Planung/02_Spezifikationen/02.1_Spieldesign-Spielerpsychologie-Optimierung.md) | **Spielerpsychologie Spec** | Mastery/Progression/Status Motivationsschleifen, Burnout-Guardrails, Recovery-Pfade. |
-| **02** | [02.2_Server-Authoritative-Tempel-Wirtschaft-Spezifikation.md](file:///g:/Meine%20Ablage/Projekte/GameDev/Roblox/Gods%20and%20Icons/Planung/02_Spezifikationen/02.2_Server-Authoritative-Tempel-Wirtschaft-Spezifikation.md) | **Netzwerk & Grid Spec** | Anti-Cheat Remote-Validierung, geometrische Kollisionsprüfung, Speicheroptimierung. |
-| **02** | [02.3_Zero-Allocation-Latency-Rollback-Spezifikation.md](file:///g:/Meine%20Ablage/Projekte/GameDev/Roblox/Gods%20and%20Icons/Planung/02_Spezifikationen/02.3_Zero-Allocation-Latency-Rollback-Spezifikation.md) | **Combat Performance Spec** | Binärer Ringpuffer mit Luau `buffer`, Latenz-Prediction und 90-Frame-Rollback. |
-| **02** | [02.4_TDD-Framework-Toolchain-Spezifikation.md](file:///g:/Meine%20Ablage/Projekte/GameDev/Roblox/Gods%20and%20Icons/Planung/02_Spezifikationen/02.4_TDD-Framework-Toolchain-Spezifikation.md) | **TDD- & Tooling-Setup** | TestEZ-Unit-Tests, Rojo-Projektmapping, Wally-Bibliotheksverwaltung. |
-| **03** | [03.1_Roblox-Spielentwicklung-Marktanalyse-Strategie.md](file:///g:/Meine%20Ablage/Projekte/GameDev/Roblox/Gods%20and%20Icons/Planung/03_Analysen-Audits/03.1_Roblox-Spielentwicklung-Marktanalyse-Strategie.md) | **Marktanalyse** | DevEx US-Ages-18+-Analyse (42%-Marge), KPI-Tracking, Release-Strategie. |
-| **03** | [03.2_Comprehensive-Architecture-Audit.md](file:///g:/Meine%20Ablage/Projekte/GameDev/Roblox/Gods%20and%20Icons/Planung/03_Analysen-Audits/03.2_Comprehensive-Architecture-Audit.md) | **Architektur-Tiefenaudit** | Aufdeckung mathematischer Schwachstellen, Speicherlecks und Behebung kritischer Bugs. |
-| **03** | [03.3_GDD-AI-OS-Alignment-Audit.md](file:///g:/Meine%20Ablage/Projekte/GameDev/Roblox/Gods%20and%20Icons/Planung/03_Analysen-Audits/03.3_GDD-AI-OS-Alignment-Audit.md) | **Brücke GDD & Technik** | Validierungs-Matrix, Anti-Cheat-Absicherung, Code- und Test-Blueprints. |
-| **03** | [03.4_Goetter-Framework-Analyse.md](file:///g:/Meine%20Ablage/Projekte/GameDev/Roblox/Gods%20and%20Icons/Planung/03_Analysen-Audits/03.4_Goetter-Framework-Analyse.md) | **Götter-Katalog & Stats** | Detaillierte mathematische Profile der Götter, Buff-Radien, Balancing-Kurven. |
+| **00** | [00.1_Game-Brief.md](docs/00.1_Game-Brief.md) | **Projekt-Zusammenfassung** | Core Loop, Zielgruppe (US 18+), Monetarisierungs-Konzept, grober Rahmen. |
+| **00** | [00.2_Gods-and-Icons-Blueprint.md](docs/00.2_Gods-and-Icons-Blueprint.md) | **Technische Architektur** | Server/Client Ownership Matrix, Datei-Layout, Luau-Typen, Remote-Protokolle. |
+| **01** | [01.1_Goetter-Design-Framework.md](docs/01_GDD-Basis/01.1_Goetter-Design-Framework.md) | **Visuelles Framework** | Ästhetischer Kontrast (Pantheon-Noir), R15-Rig-Anpassung, SLIM-LOD-System. |
+| **01** | [01.2_Goetter-Tempel-Wirtschaft.md](docs/01_GDD-Basis/01.2_Goetter-Tempel-Wirtschaft.md) | **Tycoon-System** | Asymmetrische Wirtschaft, zellulares Gitter, Glaubensgenerierung, Katastrophen. |
+| **01** | [01.3_Goetter-Kampf-Framework.md](docs/01_GDD-Basis/01.3_Goetter-Kampf-Framework.md) | **Kampfsystem** | 3x3 Auto-Battler, Einheiten-Rollen, euklidisches Targeting, Interventionen. |
+| **01** | [01.4_Goetter-Evolution.md](docs/01_GDD-Basis/01.4_Goetter-Evolution.md) | **Progressions-Loop** | Prestige-System (Rebirth), Sakrale Fusion (Breeding), Gacha-Pity-System. |
+| **01** | [01.5_Monetarisierung-Viralitaet.md](docs/01_GDD-Basis/01.5_Monetarisierung-Viralitaet.md) | **Wirtschaft & Social** | Fair-Play VIP-Server, Roblox Moments Integration, Sharing-Richtlinien. |
+| **02** | [02.1_Spieldesign-Spielerpsychologie-Optimierung.md](docs/02_Spezifikationen/02.1_Spieldesign-Spielerpsychologie-Optimierung.md) | **Spielerpsychologie Spec** | Mastery/Progression/Status Motivationsschleifen, Burnout-Guardrails, Recovery-Pfade. |
+| **02** | [02.2_Server-Authoritative-Tempel-Wirtschaft-Spezifikation.md](docs/02_Spezifikationen/02.2_Server-Authoritative-Tempel-Wirtschaft-Spezifikation.md) | **Netzwerk & Grid Spec** | Anti-Cheat Remote-Validierung, geometrische Kollisionsprüfung, Speicheroptimierung. |
+| **02** | [02.3_Zero-Allocation-Latency-Rollback-Spezifikation.md](docs/02_Spezifikationen/02.3_Zero-Allocation-Latency-Rollback-Spezifikation.md) | **Combat Performance Spec** | Binärer Ringpuffer mit Luau `buffer`, Latenz-Prediction und 90-Frame-Rollback. |
+| **02** | [02.4_TDD-Framework-Toolchain-Spezifikation.md](docs/02_Spezifikationen/02.4_TDD-Framework-Toolchain-Spezifikation.md) | **TDD- & Tooling-Setup** | TestEZ-Unit-Tests, Rojo-Projektmapping, Wally-Bibliotheksverwaltung. |
+| **03** | [03.1_Roblox-Spielentwicklung-Marktanalyse-Strategie.md](docs/03_Analysen-Audits/03.1_Roblox-Spielentwicklung-Marktanalyse-Strategie.md) | **Marktanalyse** | DevEx US-Ages-18+-Analyse (42%-Marge), KPI-Tracking, Release-Strategie. |
+| **03** | [03.2_Comprehensive-Architecture-Audit.md](docs/03_Analysen-Audits/03.2_Comprehensive-Architecture-Audit.md) | **Architektur-Tiefenaudit** | Aufdeckung mathematischer Schwachstellen, Speicherlecks und Behebung kritischer Bugs. |
+| **03** | [03.3_GDD-AI-OS-Alignment-Audit.md](docs/03_Analysen-Audits/03.3_GDD-AI-OS-Alignment-Audit.md) | **Brücke GDD & Technik** | Validierungs-Matrix, Anti-Cheat-Absicherung, Code- und Test-Blueprints. |
+| **03** | [03.4_Goetter-Framework-Analyse.md](docs/03_Analysen-Audits/03.4_Goetter-Framework-Analyse.md) | **Götter-Katalog & Stats** | Detaillierte mathematische Profile der Götter, Buff-Radien, Balancing-Kurven. |
 
 ---
 

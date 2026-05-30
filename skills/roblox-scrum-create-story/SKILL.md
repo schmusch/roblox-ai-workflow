@@ -18,12 +18,12 @@ artifact-type: skill
 
 - **Language:** Perform the workflow in English. Respond and communicate with the creator/user in German (their primary language) unless requested otherwise.
 - **Paths**:
-  - `planning_artifacts` = `docs/planning-artifacts`
-  - `implementation_artifacts` = `docs/implementation-artifacts`
+  - `planning_artifacts` = `docs`
+  - `implementation_artifacts` = `docs`
   - `sprint_status` = `{implementation_artifacts}/sprint-status.yaml`
-  - `epics_file` = `{planning_artifacts}/epics.md` or `epics_and_stories.md`
-  - `gdd_file` = `{planning_artifacts}/gdd.md`
-  - `architecture_file` = `{planning_artifacts}/architecture.md`
+  - `epics_file` = `{planning_artifacts}/epics_and_stories.md`
+  - `gdd_file` = `{planning_artifacts}/00.1_Game-Brief.md`
+  - `architecture_file` = `{planning_artifacts}/00.2_Gods-and-Icons-Blueprint.md`
   - `project_context` = `**/project-context.md` (load if exists)
   - `template` = `./template.md`
   - `validation` = `./checklist.md`

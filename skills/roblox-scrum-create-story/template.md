@@ -45,7 +45,7 @@ so that {{benefit}}.
 
 ### References
 
-- Cite sections of GDD/Architecture, e.g. [Source: docs/planning-artifacts/gdd.md#Section]
+- Cite sections of GDD/Architecture, e.g. [Source: docs/00.1_Game-Brief.md#Section]
 
 ## Dev Agent Record
 

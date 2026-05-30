@@ -18,9 +18,9 @@ artifact-type: skill
 
 - **Language:** German for user communications and decision logging. English for technical documents.
 - **Paths**:
-  - `sprint_status` = `docs/implementation-artifacts/sprint-status.yaml`
-  - `stories_folder` = `docs/implementation-artifacts/stories`
-  - `gdd_file` = `docs/planning-artifacts/gdd.md`
+  - `sprint_status` = `docs/sprint-status.yaml`
+  - `stories_folder` = `docs/stories`
+  - `gdd_file` = `docs/00.1_Game-Brief.md`
 
 ---
 
@@ -40,7 +40,7 @@ artifact-type: skill
    - If a story is no longer needed, change its status in `{sprint_status}` to `descoped` or `backlog` (to move it out of the current sprint).
 
 ### Step 3: Document Decisions
-1. Log the decision rationale in the Project Hub (`00_Roblox-Game-Dev Hub.md`) or in the `docs/planning-artifacts/sprint-change-proposal.md` log.
+1. Log the decision rationale in the Project Hub (`00_Roblox-Game-Dev Hub.md`) or in the `docs/sprint-change-proposal.md` log.
 2. Note:
    - The date and reasoning for the shift.
    - Impacted assets (scripts, remotes, Wally configurations).

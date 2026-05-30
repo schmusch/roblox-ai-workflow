@@ -32,16 +32,16 @@ artifact-type: skill
 
 ### Phase 1: Sprint Planning & Story Discovery
 1. Load e-mail/vault configs and run the `roblox-scrum-planning` workflow.
-2. Read the canonical `docs/planning-artifacts/epics_and_stories.md` file.
-3. Update `docs/implementation-artifacts/sprint-status.yaml` with legal status transitions.
+2. Read the canonical `docs/epics_and_stories.md` file.
+3. Update `docs/sprint-status.yaml` with legal status transitions.
 4. Detect the **first available backlog story key** (e.g. `1-1-cash-generator`). If no story is in `backlog`, stop and report that all work is completed.
 5. Report the target story key to the user in German and transition immediately to Phase 2.
 
 ### Phase 2: Story Context Generation
 1. Act as the Context Engineer to build the ultimate, disaster-proof story spec guide.
-2. Load the GDD (`gdd.md`), Technical Architecture (`architecture.md`), and glob `project-context.md`.
+2. Load the GDD (`docs/00.1_Game-Brief.md`), Technical Architecture (`docs/00.2_Gods-and-Icons-Blueprint.md`), and glob `project-context.md`.
 3. If applicable, load the previous story spec to extract continuity learnings and touchpoint files.
-4. Scaffold `docs/implementation-artifacts/stories/{story_key}.md` using the story spec template.
+4. Scaffold `docs/stories/{story_key}.md` using the story spec template.
 5. Run the **Quality and Disaster Prevention Checklist**:
    - Check and enforce **Server Authority** rules (explicit remote validation, no client-trusted values).
    - Clean out **Enterprise Slop** (no `Controller` / `Repository` jargon, pure Luau modules only).
@@ -63,11 +63,15 @@ artifact-type: skill
    - **Network Audit**: Are RemoteEvents rate-limited and proximity-checked?
    - **Replication Audit**: Are local changes decoupled from server authoritative states?
    - **Convention Audit**: Are names PascalCase and compliant with `references/roblox-vocabulary.md`?
-3. **MANDATORY PRE-COMMIT TEST GATE**:
+3. **MANDATORY PRE-COMMIT TEST & SYNC GATE**:
    - **Exhaustive Testing**: Run the complete automated test suite (TestEZ / Jest-Roblox) and verify that 100% of assertions pass. If any test fails, return to Phase 3.
    - **Manual/Play Solo Test Run**: Trigger play-testing in Roblox Studio. Query the active console output (`get_console_output`) to ensure there are zero warnings, errors, or unhandled exceptions.
    - **Mandatory Visual Verification**: Trigger a screen capture in Roblox Studio using the `screen_capture` tool. Save this screenshot as visual evidence in the implementation folder (or display it to the user). Confirm that UI overlays, character visuals, or modifications align perfectly with GDD/UX specs.
    - **Replication Probe**: If remotes or persistence layers were added, run runtime checks (e.g. `execute_luau` server-side) to ensure data is persisting and replicating.
+   - **Documentation Maintenance**: The developer agent MUST keep all documentation in sync with code modifications to prevent drift:
+     a) If the implementation introduced or modified RemoteEvents, RemoteFunctions, data schemas (PlayerDataStore), or significant structural ModuleScripts, update the Technical Architecture Blueprint (`docs/00.2_Gods-and-Icons-Blueprint.md`).
+     b) If the implementation introduced or modified game mechanics, unit designs, tycoon economics, player progression, or gacha balance, update the Game Brief (`docs/00.1_Game-Brief.md`).
+     c) If the overall features of the game were expanded or changed, update the Feature Matrix (`docs/Spielmechanik_Uebersicht.md`).
 4. If gaps or failures are found during these audits, return to Phase 3 to resolve them immediately. If all tests, lints, and visual evidence pass:
    - Update `{story_key}` status to `done` in `sprint-status.yaml`.
    - If all stories in the Epic are now `done`, update the Epic status to `done`.
