@@ -20,7 +20,7 @@ artifact-type: skill
 - **Paths**:
   - `planning_artifacts` = `docs`
   - `gdd_file` = `{planning_artifacts}/00.1_Game-Brief.md`
-  - `architecture_file` = `{planning_artifacts}/00.2_Gods-and-Icons-Blueprint.md`
+  - `architecture_file` = `{planning_artifacts}/00.2_Blueprint.md`
   - `output_file` = `{planning_artifacts}/epics_and_stories.md`
   - `template` = `./epics-template.md`
 
@@ -29,7 +29,7 @@ artifact-type: skill
 ## Workflow Steps
 
 ### Step 1: Validate Prerequisites
-1. Scan `{planning_artifacts}` for the GDD (`00.1_Game-Brief.md`) and the Technical Architecture (`00.2_Gods-and-Icons-Blueprint.md`).
+1. Scan `{planning_artifacts}` for the GDD (`00.1_Game-Brief.md`) and the Technical Architecture (`00.2_Blueprint.md`).
 2. If those files are missing, guide the user to run `roblox-brief` and `roblox-blueprint` first to establish the design and technical foundation.
 3. Read the GDD and Architecture documents completely, extracting:
    - Target player segments and motivations.

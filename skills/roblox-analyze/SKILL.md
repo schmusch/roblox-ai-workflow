@@ -49,7 +49,7 @@ Before reading content, list what exists:
   1. Code + `docs/sprint-status.yaml` (actual current state)
   2. `docs/epics_and_stories.md` (planned backlog behavior)
   3. `docs/00.1_Game-Brief.md` (design vision & player fantasy)
-  4. `docs/00.2_Gods-and-Icons-Blueprint.md` (technical architecture blueprint)
+  4. `docs/00.2_Blueprint.md` (technical architecture blueprint)
   5. `docs/Spielmechanik_Uebersicht.md` (feature matrix)
 - Do **NOT** use historical or archived files from `docs/_Archiv/` as active requirements.
 - Top-level folders.

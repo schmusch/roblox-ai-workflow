@@ -13,7 +13,7 @@ Sollte es zwischen verschiedenen Dateien zu inhaltlichen Widersprüchen kommen, 
 1. **Code + [docs/sprint-status.yaml](docs/sprint-status.yaml)** = Absoluter Ist-Stand (Wahrheit bei Drift).
 2. **[docs/epics_and_stories.md](docs/epics_and_stories.md)** = Geplantes Soll-Verhalten (Backlog & Acceptance Criteria).
 3. **[docs/00.1_Game-Brief.md](docs/00.1_Game-Brief.md)** = Spieldesign-Vision & Player Fantasy.
-4. **[docs/00.2_Gods-and-Icons-Blueprint.md](docs/00.2_Gods-and-Icons-Blueprint.md)** = Technische Architektur.
+4. **[docs/00.2_Blueprint.md](docs/00.2_Blueprint.md)** = Technische Architektur.
 5. **[docs/Spielmechanik_Uebersicht.md](docs/Spielmechanik_Uebersicht.md)** = Aktuelle Feature-Matrix.
 
 > [!CAUTION]

@@ -15,7 +15,7 @@ Jede Datei in diesem Verzeichnis hat eine dedizierte Funktion. Nutze die folgend
 | **-** | [stories/](stories/) | **Entwicklungs-Stories**: Enthält die reichhaltigen Entwicklungsanleitungen für die KI. |
 | **-** | [retrospectives/](retrospectives/) | **Sprint-Retrospektiven**: Protokolle zum Abschluss von Meilensteinen und zur Wissensextraktion. |
 | **-** | [features/](features/) | **Zusatz-Features**: Enthält Feature Briefs und Blueprints aus der Ideen-Pipeline. |
-| **-** | [_Archiv/](_Archiv/) | **Historisches Archiv**: Ort für veraltete oder projekt-spezifische Referenzen (z. B. Gods & Icons). |
+| **-** | [_Archiv/](_Archiv/) | **Historisches Archiv**: Ort für veraltete oder projekt-spezifische Referenzen (z. B. frühere Prototypen oder Altsysteme). |
 
 ---
 

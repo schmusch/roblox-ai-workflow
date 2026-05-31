@@ -23,7 +23,7 @@ artifact-type: skill
   - `sprint_status` = `{implementation_artifacts}/sprint-status.yaml`
   - `epics_file` = `{planning_artifacts}/epics_and_stories.md`
   - `gdd_file` = `{planning_artifacts}/00.1_Game-Brief.md`
-  - `architecture_file` = `{planning_artifacts}/00.2_Gods-and-Icons-Blueprint.md`
+  - `architecture_file` = `{planning_artifacts}/00.2_Blueprint.md`
   - `project_context` = `**/project-context.md` (load if exists)
   - `template` = `./template.md`
   - `validation` = `./checklist.md`

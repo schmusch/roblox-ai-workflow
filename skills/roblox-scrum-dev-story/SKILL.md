@@ -75,7 +75,7 @@ Execute the tasks and subtasks listed in the story spec in exact sequential orde
    - **Manual/Console Audit**: Check the console output (`get_console_output`) during active Play Solo testing to ensure zero runtime warnings or exceptions exist.
    - **Mandatory Visual Verification**: Trigger a screen capture in Roblox Studio using the `screen_capture` tool. Save this screenshot as visual evidence in the implementation folder (or display it to the user). Confirm that UI overlays, character visuals, or modifications align perfectly with GDD/UX specs.
    - **Documentation Maintenance**: The developer agent MUST keep all documentation in sync with code modifications to prevent drift:
-     a) If the implementation introduced or modified RemoteEvents, RemoteFunctions, data schemas (PlayerDataStore), or significant structural ModuleScripts, update the Technical Architecture Blueprint (`docs/00.2_Gods-and-Icons-Blueprint.md`).
+     a) If the implementation introduced or modified RemoteEvents, RemoteFunctions, data schemas (PlayerDataStore), or significant structural ModuleScripts, update the Technical Architecture Blueprint (`docs/00.2_Blueprint.md`).
      b) If the implementation introduced or modified game mechanics, unit designs, tycoon economics, player progression, or gacha balance, update the Game Brief (`docs/00.1_Game-Brief.md`).
      c) If the overall features of the game were expanded or changed, update the Feature Matrix (`docs/Spielmechanik_Uebersicht.md`).
 2. Update `{sprint_status}`: change `{story_key}` status to `review`.
