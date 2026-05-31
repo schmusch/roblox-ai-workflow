@@ -42,3 +42,8 @@ ServerPackages/
 
 # Rojo build artifacts
 *.rbxlx.temp
+
+# Roblox binary files (only keep source scripts in the repo)
+*.rbxl
+*.rbxlx
+*.rbxm
