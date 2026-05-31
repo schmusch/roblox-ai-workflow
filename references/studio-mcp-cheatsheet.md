@@ -42,6 +42,12 @@ Cross-context tests need both runs.
 
 ## screen_capture tips
 
+- **Play Solo Screenshot Pipeline (Visual Correctness Gate)**: To guarantee that implemented features visually work in the running engine, always follow this pipeline before declaring completion:
+  1. Trigger `start_stop_play` to start the game (Play Solo).
+  2. Wait at least 5 seconds (to allow player spawning, UI loading, character positioning, and network replication).
+  3. Call `screen_capture` to grab the running game viewport.
+  4. Trigger `start_stop_play` again to stop testing.
+  5. Check the captured screenshot visually to ensure all assets are rendered correctly.
 - Resolution defaults match the user's viewport; call `mcp__Roblox_Studio__resize_window` if you need a specific aspect.
 - Useful for: UI alignment checks, lighting / atmosphere verification, particle / VFX visual confirmation.
 - Pair with `roblox-visual-verdict` skill when comparing against a reference image.

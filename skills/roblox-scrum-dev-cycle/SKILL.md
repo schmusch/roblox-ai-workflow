@@ -66,7 +66,12 @@ artifact-type: skill
 3. **MANDATORY PRE-COMMIT TEST & SYNC GATE**:
    - **Exhaustive Testing**: Run the complete automated test suite (TestEZ / Jest-Roblox) and verify that 100% of assertions pass. If any test fails, return to Phase 3.
    - **Manual/Play Solo Test Run**: Trigger play-testing in Roblox Studio. Query the active console output (`get_console_output`) to ensure there are zero warnings, errors, or unhandled exceptions.
-   - **Mandatory Visual Verification**: Trigger a screen capture in Roblox Studio using the `screen_capture` tool. Save this screenshot as visual evidence in the implementation folder (or display it to the user). Confirm that UI overlays, character visuals, or modifications align perfectly with GDD/UX specs.
+   - **Mandatory Visual Verification (Play Solo Pipeline)**: To guarantee visual correctness in the running game, the agent MUST run the following verification sequence:
+     a) Start a Play Solo test session using `mcp__Roblox_Studio__start_stop_play`.
+     b) Wait at least 5 seconds for the player character, UI layouts, assets, and replication layers to load completely.
+     c) Trigger a viewport screenshot using `mcp__Roblox_Studio__screen_capture`.
+     d) Stop the Play Solo session using `mcp__Roblox_Studio__start_stop_play` to return Studio to Edit mode.
+     e) Save/display the screenshot and visually confirm that UI overlays, game elements, or building models align perfectly with the Game Brief and UX requirements.
    - **Replication Probe**: If remotes or persistence layers were added, run runtime checks (e.g. `execute_luau` server-side) to ensure data is persisting and replicating.
    - **Documentation Maintenance**: The developer agent MUST keep all documentation in sync with code modifications to prevent drift:
      a) If the implementation introduced or modified RemoteEvents, RemoteFunctions, data schemas (PlayerDataStore), or significant structural ModuleScripts, update the Technical Architecture Blueprint (`docs/00.2_Blueprint.md`).

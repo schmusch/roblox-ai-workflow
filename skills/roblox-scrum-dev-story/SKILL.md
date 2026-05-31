@@ -73,7 +73,12 @@ Execute the tasks and subtasks listed in the story spec in exact sequential orde
    - Compile the game tree using Rojo and ensure no Wally lock violations.
    - **Exhaustive Testing**: Run the full TestEZ / Jest-Roblox test suite. Assert that all unit, module, and replication tests are 100% green.
    - **Manual/Console Audit**: Check the console output (`get_console_output`) during active Play Solo testing to ensure zero runtime warnings or exceptions exist.
-   - **Mandatory Visual Verification**: Trigger a screen capture in Roblox Studio using the `screen_capture` tool. Save this screenshot as visual evidence in the implementation folder (or display it to the user). Confirm that UI overlays, character visuals, or modifications align perfectly with GDD/UX specs.
+   - **Mandatory Visual Verification (Play Solo Pipeline)**: To guarantee visual correctness in the running game, the agent MUST run the following verification sequence:
+     a) Start a Play Solo test session using `mcp__Roblox_Studio__start_stop_play`.
+     b) Wait at least 5 seconds for the player character, UI layouts, assets, and replication layers to load completely.
+     c) Trigger a viewport screenshot using `mcp__Roblox_Studio__screen_capture`.
+     d) Stop the Play Solo session using `mcp__Roblox_Studio__start_stop_play` to return Studio to Edit mode.
+     e) Save/display the screenshot and visually confirm that UI overlays, game elements, or building models align perfectly with the Game Brief and UX requirements.
    - **Documentation Maintenance**: The developer agent MUST keep all documentation in sync with code modifications to prevent drift:
      a) If the implementation introduced or modified RemoteEvents, RemoteFunctions, data schemas (PlayerDataStore), or significant structural ModuleScripts, update the Technical Architecture Blueprint (`docs/00.2_Blueprint.md`).
      b) If the implementation introduced or modified game mechanics, unit designs, tycoon economics, player progression, or gacha balance, update the Game Brief (`docs/00.1_Game-Brief.md`).
